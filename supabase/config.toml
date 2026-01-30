@@ -1,0 +1,7 @@
+project_id = "sospasvrceakoreeslmd"
+
+[functions.chat]
+verify_jwt = false
+
+[functions.predict-disease]
+verify_jwt = false
