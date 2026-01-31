@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,30 +29,10 @@ interface PredictionResult {
 }
 
 const diseaseTypes = [
-  {
-    id: "diabetes",
-    name: "Diabetes Risk",
-    icon: Droplet,
-    description: "Assess your risk for Type 2 Diabetes",
-  },
-  {
-    id: "heart",
-    name: "Heart Disease",
-    icon: Heart,
-    description: "Evaluate cardiovascular risk factors",
-  },
-  {
-    id: "kidney",
-    name: "Kidney Disease",
-    icon: Activity,
-    description: "Check kidney function indicators",
-  },
-  {
-    id: "liver",
-    name: "Liver Disease",
-    icon: Activity,
-    description: "Assess liver health markers",
-  },
+  { id: "diabetes", name: "Diabetes", icon: Droplet, description: "Type 2 Diabetes risk" },
+  { id: "heart", name: "Heart", icon: Heart, description: "Cardiovascular risk" },
+  { id: "kidney", name: "Kidney", icon: Activity, description: "Kidney function" },
+  { id: "liver", name: "Liver", icon: Activity, description: "Liver health" },
 ];
 
 const PREDICT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/predict-disease`;
@@ -96,7 +76,6 @@ export default function Predict() {
       const data = await response.json();
       setResult(data);
 
-      // Save to database
       await supabase.from("disease_assessments").insert({
         user_id: user!.id,
         disease_type: selectedDisease,
@@ -118,61 +97,236 @@ export default function Predict() {
 
   const getRiskColor = (level: string) => {
     switch (level) {
-      case "low":
-        return "text-green-600";
-      case "medium":
-        return "text-amber-500";
-      case "high":
-        return "text-red-500";
-      default:
-        return "text-muted-foreground";
+      case "low": return "text-green-600";
+      case "medium": return "text-amber-500";
+      case "high": return "text-red-500";
+      default: return "text-muted-foreground";
     }
   };
 
   const getRiskIcon = (level: string) => {
     switch (level) {
-      case "low":
-        return CheckCircle;
-      case "medium":
-        return AlertCircle;
-      case "high":
-        return AlertTriangle;
+      case "low": return CheckCircle;
+      case "medium": return AlertCircle;
+      case "high": return AlertTriangle;
+      default: return AlertCircle;
+    }
+  };
+
+  const renderFormFields = () => {
+    const commonFields = (
+      <div>
+        <Label className="text-xs md:text-sm">Age</Label>
+        <Input
+          type="number"
+          placeholder="e.g., 45"
+          value={formData.age || ""}
+          onChange={(e) => handleInputChange("age", e.target.value)}
+        />
+      </div>
+    );
+
+    switch (selectedDisease) {
+      case "diabetes":
+        return (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+            {commonFields}
+            <div>
+              <Label className="text-xs md:text-sm">BMI</Label>
+              <Input
+                type="number"
+                step="0.1"
+                placeholder="e.g., 24.5"
+                value={formData.bmi || ""}
+                onChange={(e) => handleInputChange("bmi", e.target.value)}
+              />
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">Fasting Glucose (mg/dL)</Label>
+              <Input
+                type="number"
+                placeholder="e.g., 100"
+                value={formData.glucose || ""}
+                onChange={(e) => handleInputChange("glucose", e.target.value)}
+              />
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">HbA1c (%)</Label>
+              <Input
+                type="number"
+                step="0.1"
+                placeholder="e.g., 5.7"
+                value={formData.hba1c || ""}
+                onChange={(e) => handleInputChange("hba1c", e.target.value)}
+              />
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">Family History</Label>
+              <Select value={formData.familyHistory || ""} onValueChange={(v) => handleInputChange("familyHistory", v)}>
+                <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">None</SelectItem>
+                  <SelectItem value="parent">Parent</SelectItem>
+                  <SelectItem value="sibling">Sibling</SelectItem>
+                  <SelectItem value="multiple">Multiple</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">Activity Level</Label>
+              <Select value={formData.activity || ""} onValueChange={(v) => handleInputChange("activity", v)}>
+                <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="sedentary">Sedentary</SelectItem>
+                  <SelectItem value="light">Light</SelectItem>
+                  <SelectItem value="moderate">Moderate</SelectItem>
+                  <SelectItem value="active">Active</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        );
+      case "heart":
+        return (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+            {commonFields}
+            <div>
+              <Label className="text-xs md:text-sm">Systolic BP (mmHg)</Label>
+              <Input type="number" placeholder="e.g., 120" value={formData.systolic || ""} onChange={(e) => handleInputChange("systolic", e.target.value)} />
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">Total Cholesterol (mg/dL)</Label>
+              <Input type="number" placeholder="e.g., 200" value={formData.cholesterol || ""} onChange={(e) => handleInputChange("cholesterol", e.target.value)} />
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">HDL (mg/dL)</Label>
+              <Input type="number" placeholder="e.g., 50" value={formData.hdl || ""} onChange={(e) => handleInputChange("hdl", e.target.value)} />
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">Smoking Status</Label>
+              <Select value={formData.smoking || ""} onValueChange={(v) => handleInputChange("smoking", v)}>
+                <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="never">Never</SelectItem>
+                  <SelectItem value="former">Former</SelectItem>
+                  <SelectItem value="current">Current</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">Diabetes</Label>
+              <Select value={formData.diabetes || ""} onValueChange={(v) => handleInputChange("diabetes", v)}>
+                <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="no">No</SelectItem>
+                  <SelectItem value="prediabetes">Prediabetes</SelectItem>
+                  <SelectItem value="yes">Yes</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        );
+      case "kidney":
+        return (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+            {commonFields}
+            <div>
+              <Label className="text-xs md:text-sm">eGFR</Label>
+              <Input type="number" placeholder="e.g., 90" value={formData.egfr || ""} onChange={(e) => handleInputChange("egfr", e.target.value)} />
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">Creatinine (mg/dL)</Label>
+              <Input type="number" step="0.1" placeholder="e.g., 1.0" value={formData.creatinine || ""} onChange={(e) => handleInputChange("creatinine", e.target.value)} />
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">BUN (mg/dL)</Label>
+              <Input type="number" placeholder="e.g., 15" value={formData.bun || ""} onChange={(e) => handleInputChange("bun", e.target.value)} />
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">BP History</Label>
+              <Select value={formData.bpHistory || ""} onValueChange={(v) => handleInputChange("bpHistory", v)}>
+                <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="normal">Normal</SelectItem>
+                  <SelectItem value="controlled">Controlled</SelectItem>
+                  <SelectItem value="uncontrolled">Uncontrolled</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">Diabetes</Label>
+              <Select value={formData.diabetes || ""} onValueChange={(v) => handleInputChange("diabetes", v)}>
+                <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="no">No</SelectItem>
+                  <SelectItem value="yes">Yes</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        );
+      case "liver":
+        return (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+            {commonFields}
+            <div>
+              <Label className="text-xs md:text-sm">ALT (U/L)</Label>
+              <Input type="number" placeholder="e.g., 30" value={formData.alt || ""} onChange={(e) => handleInputChange("alt", e.target.value)} />
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">AST (U/L)</Label>
+              <Input type="number" placeholder="e.g., 25" value={formData.ast || ""} onChange={(e) => handleInputChange("ast", e.target.value)} />
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">Bilirubin (mg/dL)</Label>
+              <Input type="number" step="0.1" placeholder="e.g., 1.0" value={formData.bilirubin || ""} onChange={(e) => handleInputChange("bilirubin", e.target.value)} />
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">Albumin (g/dL)</Label>
+              <Input type="number" step="0.1" placeholder="e.g., 4.0" value={formData.albumin || ""} onChange={(e) => handleInputChange("albumin", e.target.value)} />
+            </div>
+            <div>
+              <Label className="text-xs md:text-sm">Alcohol Use</Label>
+              <Select value={formData.alcohol || ""} onValueChange={(v) => handleInputChange("alcohol", v)}>
+                <SelectTrigger><SelectValue placeholder="Select..." /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">None</SelectItem>
+                  <SelectItem value="light">Light</SelectItem>
+                  <SelectItem value="moderate">Moderate</SelectItem>
+                  <SelectItem value="heavy">Heavy</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        );
       default:
-        return AlertCircle;
+        return null;
     }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <h1 className="text-3xl font-bold">Disease Risk Predictor</h1>
-        <p className="text-muted-foreground mt-1">
-          AI-powered health risk assessment based on your health metrics
+    <div className="space-y-4 md:space-y-6">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <h1 className="text-2xl md:text-3xl font-bold">Disease Risk Predictor</h1>
+        <p className="text-sm md:text-base text-muted-foreground mt-1">
+          AI-powered health risk assessment based on your metrics
         </p>
       </motion.div>
 
-      {/* Disclaimer */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <div className="flex items-start gap-2 p-4 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 rounded-lg">
-          <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
-          <p className="text-sm">
-            These predictions are for informational purposes only and should not
-            be used as a substitute for professional medical diagnosis. Always
-            consult with a healthcare provider for proper medical evaluation.
+        <div className="flex items-start gap-2 p-3 md:p-4 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 rounded-lg text-xs md:text-sm">
+          <AlertTriangle className="w-4 h-4 md:w-5 md:h-5 shrink-0 mt-0.5" />
+          <p>
+            These predictions are for informational purposes only. Always consult a healthcare provider for proper evaluation.
           </p>
         </div>
       </motion.div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Disease Selection & Form */}
+      <div className="grid lg:grid-cols-3 gap-4 md:gap-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -180,10 +334,10 @@ export default function Predict() {
           className="lg:col-span-2"
         >
           <Card>
-            <CardHeader>
-              <CardTitle>Select Assessment Type</CardTitle>
+            <CardHeader className="pb-3 md:pb-4">
+              <CardTitle className="text-base md:text-lg">Select Assessment Type</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-3 md:p-6 pt-0">
               <Tabs
                 value={selectedDisease}
                 onValueChange={(v) => {
@@ -192,311 +346,26 @@ export default function Predict() {
                   setResult(null);
                 }}
               >
-                <TabsList className="grid grid-cols-4 mb-6">
+                <TabsList className="grid grid-cols-4 mb-4 md:mb-6 h-auto">
                   {diseaseTypes.map((disease) => (
-                    <TabsTrigger key={disease.id} value={disease.id}>
-                      <disease.icon className="w-4 h-4 mr-2" />
-                      <span className="hidden sm:inline">{disease.name.split(" ")[0]}</span>
+                    <TabsTrigger key={disease.id} value={disease.id} className="flex-col gap-1 py-2 md:py-3 text-xs md:text-sm">
+                      <disease.icon className="w-4 h-4 md:w-5 md:h-5" />
+                      <span className="hidden sm:inline">{disease.name}</span>
                     </TabsTrigger>
                   ))}
                 </TabsList>
 
-                <TabsContent value="diabetes" className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label>Age</Label>
-                      <Input
-                        type="number"
-                        placeholder="e.g., 45"
-                        value={formData.age || ""}
-                        onChange={(e) => handleInputChange("age", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>BMI</Label>
-                      <Input
-                        type="number"
-                        step="0.1"
-                        placeholder="e.g., 24.5"
-                        value={formData.bmi || ""}
-                        onChange={(e) => handleInputChange("bmi", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>Fasting Glucose (mg/dL)</Label>
-                      <Input
-                        type="number"
-                        placeholder="e.g., 100"
-                        value={formData.glucose || ""}
-                        onChange={(e) => handleInputChange("glucose", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>HbA1c (%)</Label>
-                      <Input
-                        type="number"
-                        step="0.1"
-                        placeholder="e.g., 5.7"
-                        value={formData.hba1c || ""}
-                        onChange={(e) => handleInputChange("hba1c", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>Family History of Diabetes</Label>
-                      <Select
-                        value={formData.familyHistory || ""}
-                        onValueChange={(v) => handleInputChange("familyHistory", v)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="none">None</SelectItem>
-                          <SelectItem value="parent">Parent</SelectItem>
-                          <SelectItem value="sibling">Sibling</SelectItem>
-                          <SelectItem value="multiple">Multiple relatives</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label>Physical Activity Level</Label>
-                      <Select
-                        value={formData.activity || ""}
-                        onValueChange={(v) => handleInputChange("activity", v)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="sedentary">Sedentary</SelectItem>
-                          <SelectItem value="light">Light (1-2 days/week)</SelectItem>
-                          <SelectItem value="moderate">Moderate (3-4 days/week)</SelectItem>
-                          <SelectItem value="active">Active (5+ days/week)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="heart" className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label>Age</Label>
-                      <Input
-                        type="number"
-                        placeholder="e.g., 50"
-                        value={formData.age || ""}
-                        onChange={(e) => handleInputChange("age", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>Systolic Blood Pressure (mmHg)</Label>
-                      <Input
-                        type="number"
-                        placeholder="e.g., 120"
-                        value={formData.systolic || ""}
-                        onChange={(e) => handleInputChange("systolic", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>Total Cholesterol (mg/dL)</Label>
-                      <Input
-                        type="number"
-                        placeholder="e.g., 200"
-                        value={formData.cholesterol || ""}
-                        onChange={(e) => handleInputChange("cholesterol", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>HDL Cholesterol (mg/dL)</Label>
-                      <Input
-                        type="number"
-                        placeholder="e.g., 50"
-                        value={formData.hdl || ""}
-                        onChange={(e) => handleInputChange("hdl", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>Smoking Status</Label>
-                      <Select
-                        value={formData.smoking || ""}
-                        onValueChange={(v) => handleInputChange("smoking", v)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="never">Never smoked</SelectItem>
-                          <SelectItem value="former">Former smoker</SelectItem>
-                          <SelectItem value="current">Current smoker</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label>Diabetes Status</Label>
-                      <Select
-                        value={formData.diabetes || ""}
-                        onValueChange={(v) => handleInputChange("diabetes", v)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="no">No diabetes</SelectItem>
-                          <SelectItem value="prediabetes">Prediabetes</SelectItem>
-                          <SelectItem value="yes">Diagnosed diabetes</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="kidney" className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label>Age</Label>
-                      <Input
-                        type="number"
-                        placeholder="e.g., 55"
-                        value={formData.age || ""}
-                        onChange={(e) => handleInputChange("age", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>eGFR (mL/min/1.73m²)</Label>
-                      <Input
-                        type="number"
-                        placeholder="e.g., 90"
-                        value={formData.egfr || ""}
-                        onChange={(e) => handleInputChange("egfr", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>Creatinine (mg/dL)</Label>
-                      <Input
-                        type="number"
-                        step="0.1"
-                        placeholder="e.g., 1.0"
-                        value={formData.creatinine || ""}
-                        onChange={(e) => handleInputChange("creatinine", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>BUN (mg/dL)</Label>
-                      <Input
-                        type="number"
-                        placeholder="e.g., 15"
-                        value={formData.bun || ""}
-                        onChange={(e) => handleInputChange("bun", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>Blood Pressure History</Label>
-                      <Select
-                        value={formData.bpHistory || ""}
-                        onValueChange={(v) => handleInputChange("bpHistory", v)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="normal">Normal</SelectItem>
-                          <SelectItem value="controlled">Controlled hypertension</SelectItem>
-                          <SelectItem value="uncontrolled">Uncontrolled hypertension</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label>Diabetes Status</Label>
-                      <Select
-                        value={formData.diabetes || ""}
-                        onValueChange={(v) => handleInputChange("diabetes", v)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="no">No diabetes</SelectItem>
-                          <SelectItem value="yes">Has diabetes</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="liver" className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label>Age</Label>
-                      <Input
-                        type="number"
-                        placeholder="e.g., 45"
-                        value={formData.age || ""}
-                        onChange={(e) => handleInputChange("age", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>ALT (U/L)</Label>
-                      <Input
-                        type="number"
-                        placeholder="e.g., 30"
-                        value={formData.alt || ""}
-                        onChange={(e) => handleInputChange("alt", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>AST (U/L)</Label>
-                      <Input
-                        type="number"
-                        placeholder="e.g., 25"
-                        value={formData.ast || ""}
-                        onChange={(e) => handleInputChange("ast", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>Bilirubin (mg/dL)</Label>
-                      <Input
-                        type="number"
-                        step="0.1"
-                        placeholder="e.g., 0.8"
-                        value={formData.bilirubin || ""}
-                        onChange={(e) => handleInputChange("bilirubin", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>Albumin (g/dL)</Label>
-                      <Input
-                        type="number"
-                        step="0.1"
-                        placeholder="e.g., 4.0"
-                        value={formData.albumin || ""}
-                        onChange={(e) => handleInputChange("albumin", e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label>Alcohol Consumption</Label>
-                      <Select
-                        value={formData.alcohol || ""}
-                        onValueChange={(v) => handleInputChange("alcohol", v)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="none">None</SelectItem>
-                          <SelectItem value="moderate">Moderate</SelectItem>
-                          <SelectItem value="heavy">Heavy</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </TabsContent>
+                {diseaseTypes.map((disease) => (
+                  <TabsContent key={disease.id} value={disease.id}>
+                    {renderFormFields()}
+                  </TabsContent>
+                ))}
               </Tabs>
 
               <Button
                 onClick={handlePredict}
-                disabled={isLoading || Object.keys(formData).length < 3}
-                className="w-full mt-6 gradient-primary"
+                disabled={isLoading}
+                className="w-full mt-4 md:mt-6 gradient-primary"
               >
                 {isLoading ? (
                   <>
@@ -511,80 +380,51 @@ export default function Predict() {
           </Card>
         </motion.div>
 
-        {/* Results */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
           <Card className="h-fit">
-            <CardHeader>
-              <CardTitle>Assessment Result</CardTitle>
-              <CardDescription>
-                Your personalized risk analysis
-              </CardDescription>
+            <CardHeader className="pb-3 md:pb-4">
+              <CardTitle className="text-base md:text-lg">Results</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-3 md:p-6 pt-0">
               {result ? (
                 <div className="space-y-4">
-                  {/* Risk Score */}
-                  <div className="text-center">
+                  <div className="text-center p-4 bg-muted rounded-lg">
                     {(() => {
                       const RiskIcon = getRiskIcon(result.riskLevel);
                       return (
-                        <RiskIcon
-                          className={`w-16 h-16 mx-auto mb-2 ${getRiskColor(
-                            result.riskLevel
-                          )}`}
-                        />
+                        <>
+                          <RiskIcon className={`w-10 h-10 md:w-12 md:h-12 mx-auto mb-2 ${getRiskColor(result.riskLevel)}`} />
+                          <p className={`text-xl md:text-2xl font-bold capitalize ${getRiskColor(result.riskLevel)}`}>
+                            {result.riskLevel} Risk
+                          </p>
+                          <p className="text-sm text-muted-foreground">Score: {result.riskScore}/100</p>
+                        </>
                       );
                     })()}
-                    <p
-                      className={`text-2xl font-bold capitalize ${getRiskColor(
-                        result.riskLevel
-                      )}`}
-                    >
-                      {result.riskLevel} Risk
-                    </p>
-                    <div className="mt-4">
-                      <Progress
-                        value={result.riskScore}
-                        className="h-3"
-                      />
-                      <p className="text-sm text-muted-foreground mt-1">
-                        Risk Score: {result.riskScore}%
-                      </p>
+                  </div>
+                  <Progress value={result.riskScore} className="h-2" />
+                  <div className="prose prose-sm dark:prose-invert max-w-none text-sm">
+                    <ReactMarkdown>{result.analysis}</ReactMarkdown>
+                  </div>
+                  {result.recommendations?.length > 0 && (
+                    <div>
+                      <p className="font-medium text-sm mb-2">Recommendations:</p>
+                      <ul className="list-disc list-inside space-y-1 text-xs md:text-sm text-muted-foreground">
+                        {result.recommendations.map((rec, i) => (
+                          <li key={i}>{rec}</li>
+                        ))}
+                      </ul>
                     </div>
-                  </div>
-
-                  {/* Analysis */}
-                  <div className="pt-4 border-t">
-                    <h4 className="font-semibold mb-2">Analysis</h4>
-                    <div className="prose prose-sm dark:prose-invert max-w-none text-muted-foreground">
-                      <ReactMarkdown>{result.analysis}</ReactMarkdown>
-                    </div>
-                  </div>
-
-                  {/* Recommendations */}
-                  <div className="pt-4 border-t">
-                    <h4 className="font-semibold mb-2">Recommendations</h4>
-                    <ul className="space-y-2">
-                      {result.recommendations.map((rec, i) => (
-                        <li
-                          key={i}
-                          className="flex items-start gap-2 text-sm text-muted-foreground"
-                        >
-                          <CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                          {rec}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  )}
                 </div>
               ) : (
-                <div className="text-center py-12 text-muted-foreground">
-                  <Activity className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>Fill in your health data and click "Get Risk Assessment"</p>
+                <div className="text-center py-8 text-muted-foreground">
+                  <Activity className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 opacity-50" />
+                  <p className="text-sm">Enter your health data and click "Get Risk Assessment"</p>
                 </div>
               )}
             </CardContent>

@@ -5,9 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   MessageCircle,
   Send,
@@ -16,6 +18,8 @@ import {
   AlertTriangle,
   Plus,
   Trash2,
+  History,
+  Bot,
 } from "lucide-react";
 
 interface Message {
@@ -36,12 +40,13 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 
 export default function Chat() {
   const { user } = useAuthContext();
+  const isMobile = useIsMobile();
   const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [currentConversation, setCurrentConversation] =
-    useState<Conversation | null>(null);
+  const [currentConversation, setCurrentConversation] = useState<Conversation | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -73,14 +78,11 @@ export default function Chat() {
       .eq("user_id", user!.id)
       .order("updated_at", { ascending: false });
 
-    if (error) {
-      console.error("Error fetching conversations:", error);
-      return;
-    }
-
-    setConversations(data as Conversation[]);
-    if (data.length > 0 && !currentConversation) {
-      setCurrentConversation(data[0] as Conversation);
+    if (!error && data) {
+      setConversations(data as Conversation[]);
+      if (data.length > 0 && !currentConversation) {
+        setCurrentConversation(data[0] as Conversation);
+      }
     }
   };
 
@@ -91,12 +93,9 @@ export default function Chat() {
       .eq("conversation_id", conversationId)
       .order("created_at", { ascending: true });
 
-    if (error) {
-      console.error("Error fetching messages:", error);
-      return;
+    if (!error && data) {
+      setMessages(data as Message[]);
     }
-
-    setMessages(data as Message[]);
   };
 
   const createNewConversation = async () => {
@@ -110,33 +109,30 @@ export default function Chat() {
       .select()
       .single();
 
-    if (error) {
-      toast.error("Failed to create conversation");
-      return;
+    if (!error && data) {
+      setConversations((prev) => [data as Conversation, ...prev]);
+      setCurrentConversation(data as Conversation);
+      setMessages([]);
+      setShowHistory(false);
     }
-
-    setConversations((prev) => [data as Conversation, ...prev]);
-    setCurrentConversation(data as Conversation);
-    setMessages([]);
   };
 
   const deleteConversation = async (id: string) => {
-    const { error } = await supabase
-      .from("chat_conversations")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("chat_conversations").delete().eq("id", id);
 
-    if (error) {
-      toast.error("Failed to delete conversation");
-      return;
+    if (!error) {
+      setConversations((prev) => prev.filter((c) => c.id !== id));
+      if (currentConversation?.id === id) {
+        const remaining = conversations.filter((c) => c.id !== id);
+        setCurrentConversation(remaining.length > 0 ? remaining[0] : null);
+        setMessages([]);
+      }
     }
+  };
 
-    setConversations((prev) => prev.filter((c) => c.id !== id));
-    if (currentConversation?.id === id) {
-      const remaining = conversations.filter((c) => c.id !== id);
-      setCurrentConversation(remaining.length > 0 ? remaining[0] : null);
-      setMessages([]);
-    }
+  const selectConversation = (conv: Conversation) => {
+    setCurrentConversation(conv);
+    setShowHistory(false);
   };
 
   const sendMessage = async () => {
@@ -144,7 +140,6 @@ export default function Chat() {
 
     let conversationId = currentConversation?.id;
 
-    // Create new conversation if none exists
     if (!conversationId) {
       const { data, error } = await supabase
         .from("chat_conversations")
@@ -177,7 +172,6 @@ export default function Chat() {
     setInput("");
     setIsLoading(true);
 
-    // Save user message to database
     await supabase.from("chat_messages").insert({
       conversation_id: conversationId,
       user_id: user!.id,
@@ -185,7 +179,6 @@ export default function Chat() {
       content: input,
     });
 
-    // Stream AI response
     let assistantContent = "";
     const assistantMessage: Message = {
       id: crypto.randomUUID(),
@@ -253,9 +246,7 @@ export default function Chat() {
               assistantContent += content;
               setMessages((prev) =>
                 prev.map((m) =>
-                  m.id === assistantMessage.id
-                    ? { ...m, content: assistantContent }
-                    : m
+                  m.id === assistantMessage.id ? { ...m, content: assistantContent } : m
                 )
               );
             }
@@ -266,7 +257,6 @@ export default function Chat() {
         }
       }
 
-      // Save assistant message to database
       await supabase.from("chat_messages").insert({
         conversation_id: conversationId,
         user_id: user!.id,
@@ -274,7 +264,6 @@ export default function Chat() {
         content: assistantContent,
       });
 
-      // Update conversation title if it was the first message
       if (messages.length === 0) {
         await supabase
           .from("chat_conversations")
@@ -298,86 +287,112 @@ export default function Chat() {
     }
   };
 
+  const ConversationList = () => (
+    <div className="space-y-1">
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={createNewConversation}
+        className="w-full mb-3"
+      >
+        <Plus className="w-4 h-4 mr-2" />
+        New Chat
+      </Button>
+      {conversations.map((conv) => (
+        <div
+          key={conv.id}
+          className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer group ${
+            currentConversation?.id === conv.id
+              ? "bg-primary text-primary-foreground"
+              : "hover:bg-muted"
+          }`}
+          onClick={() => selectConversation(conv)}
+        >
+          <MessageCircle className="w-4 h-4 shrink-0" />
+          <span className="flex-1 truncate text-sm">{conv.title}</span>
+          <Button
+            size="icon"
+            variant="ghost"
+            className="w-6 h-6 opacity-0 group-hover:opacity-100"
+            onClick={(e) => {
+              e.stopPropagation();
+              deleteConversation(conv.id);
+            }}
+          >
+            <Trash2 className="w-3 h-3" />
+          </Button>
+        </div>
+      ))}
+      {conversations.length === 0 && (
+        <p className="text-sm text-muted-foreground text-center py-4">
+          No conversations yet
+        </p>
+      )}
+    </div>
+  );
+
   return (
-    <div className="flex h-[calc(100vh-8rem)] gap-4">
-      {/* Conversations Sidebar */}
-      <Card className="w-64 shrink-0 flex flex-col">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
+    <div className="flex flex-col h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] md:flex-row gap-4">
+      {/* Desktop Conversations Sidebar */}
+      {!isMobile && (
+        <Card className="w-64 shrink-0 flex flex-col">
+          <CardHeader className="pb-3">
             <CardTitle className="text-base">Conversations</CardTitle>
-            <Button size="icon" variant="ghost" onClick={createNewConversation}>
-              <Plus className="w-4 h-4" />
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="flex-1 overflow-hidden p-2">
-          <ScrollArea className="h-full">
-            <div className="space-y-1">
-              {conversations.map((conv) => (
-                <div
-                  key={conv.id}
-                  className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer group ${
-                    currentConversation?.id === conv.id
-                      ? "bg-primary text-primary-foreground"
-                      : "hover:bg-muted"
-                  }`}
-                  onClick={() => setCurrentConversation(conv)}
-                >
-                  <MessageCircle className="w-4 h-4 shrink-0" />
-                  <span className="flex-1 truncate text-sm">{conv.title}</span>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    className="w-6 h-6 opacity-0 group-hover:opacity-100"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteConversation(conv.id);
-                    }}
-                  >
-                    <Trash2 className="w-3 h-3" />
-                  </Button>
-                </div>
-              ))}
-              {conversations.length === 0 && (
-                <p className="text-sm text-muted-foreground text-center py-4">
-                  No conversations yet
-                </p>
-              )}
-            </div>
-          </ScrollArea>
-        </CardContent>
-      </Card>
+          </CardHeader>
+          <CardContent className="flex-1 overflow-hidden p-2">
+            <ScrollArea className="h-full">
+              <ConversationList />
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Chat Area */}
-      <Card className="flex-1 flex flex-col">
-        <CardHeader className="pb-3 border-b">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+      <Card className="flex-1 flex flex-col min-h-0">
+        <CardHeader className="pb-3 border-b shrink-0">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
+                <Bot className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-base">DVDL Bot</CardTitle>
+                <p className="text-xs text-muted-foreground">Your AI Health Assistant</p>
+              </div>
             </div>
-            <div>
-              <CardTitle className="text-base">AI Health Assistant</CardTitle>
-              <p className="text-xs text-muted-foreground">
-                Powered by Lovable AI
-              </p>
-            </div>
+            {isMobile && (
+              <Sheet open={showHistory} onOpenChange={setShowHistory}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <History className="w-5 h-5" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-72">
+                  <SheetHeader>
+                    <SheetTitle>Chat History</SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-4">
+                    <ConversationList />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            )}
           </div>
         </CardHeader>
 
-        <CardContent className="flex-1 flex flex-col p-4 overflow-hidden">
+        <CardContent className="flex-1 flex flex-col p-3 md:p-4 overflow-hidden min-h-0">
           {/* Disclaimer */}
-          <div className="flex items-start gap-2 p-3 mb-4 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 rounded-lg text-sm">
+          <div className="flex items-start gap-2 p-2 md:p-3 mb-3 md:mb-4 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 rounded-lg text-xs md:text-sm shrink-0">
             <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
             <p>
-              This AI provides general health information only. It does not
-              replace professional medical advice. Always consult a healthcare
-              provider for medical concerns.
+              DVDL Bot provides general health information only. Always consult a
+              healthcare provider for medical concerns.
             </p>
           </div>
 
           {/* Messages */}
-          <ScrollArea className="flex-1" ref={scrollRef}>
-            <div className="space-y-4 pr-4">
+          <ScrollArea className="flex-1 min-h-0" ref={scrollRef}>
+            <div className="space-y-3 md:space-y-4 pr-2 md:pr-4">
               <AnimatePresence>
                 {messages.map((message) => (
                   <motion.div
@@ -389,7 +404,7 @@ export default function Chat() {
                     }`}
                   >
                     <div
-                      className={`max-w-[80%] p-3 rounded-2xl ${
+                      className={`max-w-[85%] md:max-w-[80%] p-2.5 md:p-3 rounded-2xl text-sm md:text-base ${
                         message.role === "user"
                           ? "bg-primary text-primary-foreground rounded-br-md"
                           : "bg-muted rounded-bl-md"
@@ -407,14 +422,13 @@ export default function Chat() {
                 ))}
               </AnimatePresence>
               {messages.length === 0 && (
-                <div className="text-center py-12 text-muted-foreground">
-                  <MessageCircle className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p className="text-lg font-medium">
-                    Start a conversation with your AI Health Assistant
+                <div className="text-center py-8 md:py-12 text-muted-foreground">
+                  <Bot className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 md:mb-4 opacity-50" />
+                  <p className="text-base md:text-lg font-medium">
+                    Start a conversation with DVDL Bot
                   </p>
-                  <p className="text-sm mt-2">
-                    Ask about symptoms, health tips, or general wellness
-                    questions
+                  <p className="text-xs md:text-sm mt-2">
+                    Ask about symptoms, health tips, or wellness questions
                   </p>
                 </div>
               )}
@@ -422,20 +436,21 @@ export default function Chat() {
           </ScrollArea>
 
           {/* Input */}
-          <div className="mt-4 flex gap-2">
+          <div className="mt-3 md:mt-4 flex gap-2 shrink-0">
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask about your health..."
-              className="resize-none min-h-[50px]"
+              placeholder="Ask DVDL Bot about your health..."
+              className="resize-none min-h-[44px] md:min-h-[50px] text-sm md:text-base"
               disabled={isLoading}
+              rows={1}
             />
             <Button
               onClick={sendMessage}
               disabled={!input.trim() || isLoading}
               size="icon"
-              className="shrink-0 h-[50px] w-[50px]"
+              className="shrink-0 h-[44px] w-[44px] md:h-[50px] md:w-[50px]"
             >
               {isLoading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />

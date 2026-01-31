@@ -1,9 +1,5 @@
 import { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useAuthContext } from "@/contexts/AuthContext";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   MessageCircle,
@@ -12,43 +8,53 @@ import {
   Pill,
   User,
   LogOut,
+  Heart,
   ChevronLeft,
   ChevronRight,
-  Heart,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
+import { useAuthContext } from "@/contexts/AuthContext";
 
 const navItems = [
-  { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { path: "/chat", label: "Health Chatbot", icon: MessageCircle },
-  { path: "/predict", label: "Disease Predictor", icon: Activity },
-  { path: "/records", label: "My Records", icon: FileText },
-  { path: "/medications", label: "Medications", icon: Pill },
-  { path: "/profile", label: "Profile", icon: User },
+  { path: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+  { path: "/chat", icon: MessageCircle, label: "DVDL Bot" },
+  { path: "/predict", icon: Activity, label: "Predictor" },
+  { path: "/records", icon: FileText, label: "Records" },
+  { path: "/medications", icon: Pill, label: "Medications" },
+  { path: "/profile", icon: User, label: "Profile" },
 ];
 
-export function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
+interface SidebarProps {
+  onNavigate?: () => void;
+}
+
+export function Sidebar({ onNavigate }: SidebarProps) {
   const { user, signOut } = useAuthContext();
   const location = useLocation();
+  const navigate = useNavigate();
+  const [collapsed, setCollapsed] = useState(false);
 
   const handleSignOut = async () => {
-    try {
-      await signOut();
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
+    await signOut();
+    navigate("/");
+  };
+
+  const handleNavClick = () => {
+    onNavigate?.();
   };
 
   return (
     <aside
       className={cn(
-        "flex flex-col h-screen bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300",
+        "relative flex flex-col h-full bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300",
         collapsed ? "w-16" : "w-64"
       )}
     >
       {/* Logo */}
       <div className="flex items-center gap-3 p-4 border-b border-sidebar-border">
-        <div className="flex items-center justify-center w-10 h-10 rounded-xl gradient-primary">
+        <div className="flex items-center justify-center w-10 h-10 rounded-xl gradient-primary shrink-0">
           <Heart className="w-5 h-5 text-white" />
         </div>
         {!collapsed && (
@@ -65,6 +71,7 @@ export function Sidebar() {
             <NavLink
               key={item.path}
               to={item.path}
+              onClick={handleNavClick}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
                 isActive
@@ -87,7 +94,7 @@ export function Sidebar() {
             collapsed ? "justify-center" : ""
           )}
         >
-          <Avatar className="w-9 h-9">
+          <Avatar className="w-9 h-9 shrink-0">
             <AvatarImage src={user?.user_metadata?.avatar_url} />
             <AvatarFallback className="bg-sidebar-accent text-sidebar-foreground">
               {user?.email?.charAt(0).toUpperCase() || "U"}
@@ -118,10 +125,10 @@ export function Sidebar() {
         </Button>
       </div>
 
-      {/* Collapse Toggle */}
+      {/* Collapse Toggle - Desktop only */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="absolute top-1/2 -right-3 transform -translate-y-1/2 w-6 h-6 bg-sidebar-accent border border-sidebar-border rounded-full flex items-center justify-center text-sidebar-foreground/70 hover:text-sidebar-foreground transition-colors"
+        className="hidden md:flex absolute top-1/2 -right-3 transform -translate-y-1/2 w-6 h-6 bg-sidebar-accent border border-sidebar-border rounded-full items-center justify-center text-sidebar-foreground/70 hover:text-sidebar-foreground transition-colors"
       >
         {collapsed ? (
           <ChevronRight className="w-3 h-3" />
