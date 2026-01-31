@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import { User, Mail, Calendar, Ruler, Scale, Droplet, Phone, Save, Loader2 } from "lucide-react";
+import { User, Mail, Ruler, Scale, Droplet, Save, Loader2 } from "lucide-react";
 
 interface Profile {
   id: string;
@@ -51,7 +51,7 @@ export default function ProfilePage() {
       .from("profiles")
       .select("*")
       .eq("user_id", user.id)
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.error("Error fetching profile:", error);
@@ -107,14 +107,11 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="space-y-6 max-w-3xl mx-auto">
+    <div className="space-y-4 md:space-y-6 max-w-3xl mx-auto">
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <h1 className="text-3xl font-bold">Profile Settings</h1>
-        <p className="text-muted-foreground mt-1">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <h1 className="text-2xl md:text-3xl font-bold">Profile Settings</h1>
+        <p className="text-sm md:text-base text-muted-foreground mt-1">
           Manage your personal information and health details
         </p>
       </motion.div>
@@ -127,18 +124,20 @@ export default function ProfilePage() {
       >
         <Card>
           <CardHeader>
-            <div className="flex items-center gap-4">
-              <Avatar className="w-20 h-20">
+            <div className="flex items-center gap-3 md:gap-4">
+              <Avatar className="w-16 h-16 md:w-20 md:h-20">
                 <AvatarImage src={profile?.avatar_url || undefined} />
-                <AvatarFallback className="bg-primary/10 text-primary text-2xl">
+                <AvatarFallback className="bg-primary/10 text-primary text-xl md:text-2xl">
                   {formData.full_name?.charAt(0) || user?.email?.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <div>
-                <CardTitle>{formData.full_name || "Your Name"}</CardTitle>
-                <CardDescription className="flex items-center gap-2 mt-1">
-                  <Mail className="w-4 h-4" />
-                  {user?.email}
+              <div className="min-w-0">
+                <CardTitle className="text-base md:text-lg truncate">
+                  {formData.full_name || "Your Name"}
+                </CardTitle>
+                <CardDescription className="flex items-center gap-2 mt-1 text-xs md:text-sm">
+                  <Mail className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
+                  <span className="truncate">{user?.email}</span>
                 </CardDescription>
               </div>
             </div>
@@ -153,41 +152,35 @@ export default function ProfilePage() {
         transition={{ delay: 0.2 }}
       >
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="w-5 h-5 text-primary" />
+          <CardHeader className="pb-3 md:pb-4">
+            <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+              <User className="w-4 h-4 md:w-5 md:h-5 text-primary" />
               Personal Information
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label>Full Name</Label>
+                <Label className="text-xs md:text-sm">Full Name</Label>
                 <Input
                   placeholder="Your full name"
                   value={formData.full_name}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, full_name: e.target.value }))
-                  }
+                  onChange={(e) => setFormData((prev) => ({ ...prev, full_name: e.target.value }))}
                 />
               </div>
               <div>
-                <Label>Date of Birth</Label>
+                <Label className="text-xs md:text-sm">Date of Birth</Label>
                 <Input
                   type="date"
                   value={formData.date_of_birth}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, date_of_birth: e.target.value }))
-                  }
+                  onChange={(e) => setFormData((prev) => ({ ...prev, date_of_birth: e.target.value }))}
                 />
               </div>
               <div>
-                <Label>Gender</Label>
+                <Label className="text-xs md:text-sm">Gender</Label>
                 <Select
                   value={formData.gender}
-                  onValueChange={(v) =>
-                    setFormData((prev) => ({ ...prev, gender: v }))
-                  }
+                  onValueChange={(v) => setFormData((prev) => ({ ...prev, gender: v }))}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select gender..." />
@@ -201,15 +194,12 @@ export default function ProfilePage() {
                 </Select>
               </div>
               <div>
-                <Label>Emergency Contact</Label>
+                <Label className="text-xs md:text-sm">Emergency Contact</Label>
                 <Input
                   placeholder="Phone number"
                   value={formData.emergency_contact}
                   onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      emergency_contact: e.target.value,
-                    }))
+                    setFormData((prev) => ({ ...prev, emergency_contact: e.target.value }))
                   }
                 />
               </div>
@@ -225,53 +215,47 @@ export default function ProfilePage() {
         transition={{ delay: 0.3 }}
       >
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Droplet className="w-5 h-5 text-primary" />
+          <CardHeader className="pb-3 md:pb-4">
+            <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+              <Droplet className="w-4 h-4 md:w-5 md:h-5 text-primary" />
               Health Information
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-3 md:gap-4">
               <div>
-                <Label className="flex items-center gap-2">
-                  <Ruler className="w-4 h-4" />
+                <Label className="flex items-center gap-1 text-xs md:text-sm">
+                  <Ruler className="w-3 h-3 md:w-4 md:h-4" />
                   Height (cm)
                 </Label>
                 <Input
                   type="number"
-                  placeholder="e.g., 175"
+                  placeholder="175"
                   value={formData.height_cm}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, height_cm: e.target.value }))
-                  }
+                  onChange={(e) => setFormData((prev) => ({ ...prev, height_cm: e.target.value }))}
                 />
               </div>
               <div>
-                <Label className="flex items-center gap-2">
-                  <Scale className="w-4 h-4" />
+                <Label className="flex items-center gap-1 text-xs md:text-sm">
+                  <Scale className="w-3 h-3 md:w-4 md:h-4" />
                   Weight (kg)
                 </Label>
                 <Input
                   type="number"
                   step="0.1"
-                  placeholder="e.g., 70"
+                  placeholder="70"
                   value={formData.weight_kg}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, weight_kg: e.target.value }))
-                  }
+                  onChange={(e) => setFormData((prev) => ({ ...prev, weight_kg: e.target.value }))}
                 />
               </div>
               <div>
-                <Label className="flex items-center gap-2">
-                  <Droplet className="w-4 h-4" />
+                <Label className="flex items-center gap-1 text-xs md:text-sm">
+                  <Droplet className="w-3 h-3 md:w-4 md:h-4" />
                   Blood Type
                 </Label>
                 <Select
                   value={formData.blood_type}
-                  onValueChange={(v) =>
-                    setFormData((prev) => ({ ...prev, blood_type: v }))
-                  }
+                  onValueChange={(v) => setFormData((prev) => ({ ...prev, blood_type: v }))}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select..." />
@@ -288,8 +272,8 @@ export default function ProfilePage() {
             </div>
 
             {formData.height_cm && formData.weight_kg && (
-              <div className="p-4 bg-muted rounded-lg">
-                <p className="text-sm text-muted-foreground">
+              <div className="p-3 md:p-4 bg-muted rounded-lg">
+                <p className="text-xs md:text-sm text-muted-foreground">
                   Your BMI:{" "}
                   <span className="font-bold text-foreground">
                     {(
