@@ -10,16 +10,18 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useUserLocation } from "@/hooks/useUserLocation";
+import { RegionSelector } from "@/components/location/RegionSelector";
 import {
   MessageCircle,
   Send,
   Loader2,
-  Sparkles,
   AlertTriangle,
   Plus,
   Trash2,
   History,
   Bot,
+  Globe,
 } from "lucide-react";
 
 interface Message {
@@ -41,12 +43,14 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 export default function Chat() {
   const { user } = useAuthContext();
   const isMobile = useIsMobile();
+  const { location, needsRegionSelection } = useUserLocation();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [currentConversation, setCurrentConversation] = useState<Conversation | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [showRegionSelector, setShowRegionSelector] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,6 +68,13 @@ export default function Chat() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    // Show region selector if user hasn't set a region yet
+    if (user && needsRegionSelection) {
+      setShowRegionSelector(true);
+    }
+  }, [user, needsRegionSelection]);
 
   const scrollToBottom = () => {
     if (scrollRef.current) {
@@ -201,6 +212,7 @@ export default function Chat() {
             role: m.role,
             content: m.content,
           })),
+          region: location?.region || "global",
         }),
       });
 
@@ -287,6 +299,15 @@ export default function Chat() {
     }
   };
 
+  const getRegionLabel = (region: string) => {
+    switch (region) {
+      case "uk": return "🇬🇧 UK - NHS";
+      case "us": return "🇺🇸 USA - CDC";
+      case "india": return "🇮🇳 India - ICMR";
+      default: return "🌍 Global - WHO";
+    }
+  };
+
   const ConversationList = () => (
     <div className="space-y-1">
       <Button
@@ -332,135 +353,154 @@ export default function Chat() {
   );
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] md:flex-row gap-4">
-      {/* Desktop Conversations Sidebar */}
-      {!isMobile && (
-        <Card className="w-64 shrink-0 flex flex-col">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">Conversations</CardTitle>
-          </CardHeader>
-          <CardContent className="flex-1 overflow-hidden p-2">
-            <ScrollArea className="h-full">
-              <ConversationList />
-            </ScrollArea>
-          </CardContent>
-        </Card>
-      )}
+    <>
+      <RegionSelector 
+        open={showRegionSelector} 
+        onOpenChange={setShowRegionSelector}
+      />
+      
+      <div className="flex flex-col h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] md:flex-row gap-4">
+        {/* Desktop Conversations Sidebar */}
+        {!isMobile && (
+          <Card className="w-64 shrink-0 flex flex-col">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Conversations</CardTitle>
+            </CardHeader>
+            <CardContent className="flex-1 overflow-hidden p-2">
+              <ScrollArea className="h-full">
+                <ConversationList />
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        )}
 
-      {/* Chat Area */}
-      <Card className="flex-1 flex flex-col min-h-0">
-        <CardHeader className="pb-3 border-b shrink-0">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
-                <Bot className="w-5 h-5 text-white" />
+        {/* Chat Area */}
+        <Card className="flex-1 flex flex-col min-h-0">
+          <CardHeader className="pb-3 border-b shrink-0">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
+                  <Bot className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-base">DVDL Bot</CardTitle>
+                  <p className="text-xs text-muted-foreground">Your AI Health Assistant</p>
+                </div>
               </div>
-              <div>
-                <CardTitle className="text-base">DVDL Bot</CardTitle>
-                <p className="text-xs text-muted-foreground">Your AI Health Assistant</p>
+              <div className="flex items-center gap-2">
+                {/* Region Indicator */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowRegionSelector(true)}
+                  className="text-xs h-8"
+                >
+                  <Globe className="w-3 h-3 mr-1" />
+                  {getRegionLabel(location?.region || "global")}
+                </Button>
+                {isMobile && (
+                  <Sheet open={showHistory} onOpenChange={setShowHistory}>
+                    <SheetTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <History className="w-5 h-5" />
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="right" className="w-72">
+                      <SheetHeader>
+                        <SheetTitle>Chat History</SheetTitle>
+                      </SheetHeader>
+                      <div className="mt-4">
+                        <ConversationList />
+                      </div>
+                    </SheetContent>
+                  </Sheet>
+                )}
               </div>
             </div>
-            {isMobile && (
-              <Sheet open={showHistory} onOpenChange={setShowHistory}>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <History className="w-5 h-5" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="right" className="w-72">
-                  <SheetHeader>
-                    <SheetTitle>Chat History</SheetTitle>
-                  </SheetHeader>
-                  <div className="mt-4">
-                    <ConversationList />
-                  </div>
-                </SheetContent>
-              </Sheet>
-            )}
-          </div>
-        </CardHeader>
+          </CardHeader>
 
-        <CardContent className="flex-1 flex flex-col p-3 md:p-4 overflow-hidden min-h-0">
-          {/* Disclaimer */}
-          <div className="flex items-start gap-2 p-2 md:p-3 mb-3 md:mb-4 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 rounded-lg text-xs md:text-sm shrink-0">
-            <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
-            <p>
-              DVDL Bot provides general health information only. Always consult a
-              healthcare provider for medical concerns.
-            </p>
-          </div>
+          <CardContent className="flex-1 flex flex-col p-3 md:p-4 overflow-hidden min-h-0">
+            {/* Disclaimer */}
+            <div className="flex items-start gap-2 p-2 md:p-3 mb-3 md:mb-4 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 rounded-lg text-xs md:text-sm shrink-0">
+              <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+              <p>
+                DVDL Bot provides general health information only. Always consult a
+                healthcare provider for medical concerns.
+              </p>
+            </div>
 
-          {/* Messages */}
-          <ScrollArea className="flex-1 min-h-0" ref={scrollRef}>
-            <div className="space-y-3 md:space-y-4 pr-2 md:pr-4">
-              <AnimatePresence>
-                {messages.map((message) => (
-                  <motion.div
-                    key={message.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`flex ${
-                      message.role === "user" ? "justify-end" : "justify-start"
-                    }`}
-                  >
-                    <div
-                      className={`max-w-[85%] md:max-w-[80%] p-2.5 md:p-3 rounded-2xl text-sm md:text-base ${
-                        message.role === "user"
-                          ? "bg-primary text-primary-foreground rounded-br-md"
-                          : "bg-muted rounded-bl-md"
+            {/* Messages */}
+            <ScrollArea className="flex-1 min-h-0" ref={scrollRef}>
+              <div className="space-y-3 md:space-y-4 pr-2 md:pr-4">
+                <AnimatePresence>
+                  {messages.map((message) => (
+                    <motion.div
+                      key={message.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`flex ${
+                        message.role === "user" ? "justify-end" : "justify-start"
                       }`}
                     >
-                      {message.role === "assistant" ? (
-                        <div className="prose prose-sm dark:prose-invert max-w-none">
-                          <ReactMarkdown>{message.content}</ReactMarkdown>
-                        </div>
-                      ) : (
-                        <p>{message.content}</p>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-              {messages.length === 0 && (
-                <div className="text-center py-8 md:py-12 text-muted-foreground">
-                  <Bot className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 md:mb-4 opacity-50" />
-                  <p className="text-base md:text-lg font-medium">
-                    Start a conversation with DVDL Bot
-                  </p>
-                  <p className="text-xs md:text-sm mt-2">
-                    Ask about symptoms, health tips, or wellness questions
-                  </p>
-                </div>
-              )}
-            </div>
-          </ScrollArea>
+                      <div
+                        className={`max-w-[85%] md:max-w-[80%] p-2.5 md:p-3 rounded-2xl text-sm md:text-base ${
+                          message.role === "user"
+                            ? "bg-primary text-primary-foreground rounded-br-md"
+                            : "bg-muted rounded-bl-md"
+                        }`}
+                      >
+                        {message.role === "assistant" ? (
+                          <div className="prose prose-sm dark:prose-invert max-w-none">
+                            <ReactMarkdown>{message.content}</ReactMarkdown>
+                          </div>
+                        ) : (
+                          <p>{message.content}</p>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+                {messages.length === 0 && (
+                  <div className="text-center py-8 md:py-12 text-muted-foreground">
+                    <Bot className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 md:mb-4 opacity-50" />
+                    <p className="text-base md:text-lg font-medium">
+                      Start a conversation with DVDL Bot
+                    </p>
+                    <p className="text-xs md:text-sm mt-2">
+                      Ask about symptoms, health tips, or wellness questions
+                    </p>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
 
-          {/* Input */}
-          <div className="mt-3 md:mt-4 flex gap-2 shrink-0">
-            <Textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Ask DVDL Bot about your health..."
-              className="resize-none min-h-[44px] md:min-h-[50px] text-sm md:text-base"
-              disabled={isLoading}
-              rows={1}
-            />
-            <Button
-              onClick={sendMessage}
-              disabled={!input.trim() || isLoading}
-              size="icon"
-              className="shrink-0 h-[44px] w-[44px] md:h-[50px] md:w-[50px]"
-            >
-              {isLoading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <Send className="w-5 h-5" />
-              )}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+            {/* Input */}
+            <div className="mt-3 md:mt-4 flex gap-2 shrink-0">
+              <Textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Ask DVDL Bot about your health..."
+                className="resize-none min-h-[44px] md:min-h-[50px] text-sm md:text-base"
+                disabled={isLoading}
+                rows={1}
+              />
+              <Button
+                onClick={sendMessage}
+                disabled={!input.trim() || isLoading}
+                size="icon"
+                className="shrink-0 h-[44px] w-[44px] md:h-[50px] md:w-[50px]"
+              >
+                {isLoading ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <Send className="w-5 h-5" />
+                )}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 }

@@ -1,18 +1,18 @@
 import { NavLink, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
-  MessageCircle,
-  Activity,
-  FileText,
+  Bot,
+  Stethoscope,
+  ClipboardList,
   Pill,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { path: "/dashboard", icon: LayoutDashboard, label: "Home" },
-  { path: "/chat", icon: MessageCircle, label: "Bot" },
-  { path: "/predict", icon: Activity, label: "Predict" },
-  { path: "/records", icon: FileText, label: "Records" },
+  { path: "/chat", icon: Bot, label: "Bot" },
+  { path: "/predict", icon: Stethoscope, label: "Predict" },
+  { path: "/records", icon: ClipboardList, label: "Records" },
   { path: "/medications", icon: Pill, label: "Meds" },
 ];
 
@@ -30,10 +30,10 @@ export function MobileNav() {
               key={item.path}
               to={item.path}
               className={cn(
-                "flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors",
+                "flex flex-col items-center justify-center gap-1 flex-1 h-full min-h-[44px] min-w-[44px] transition-colors",
                 isActive
                   ? "text-primary"
-                  : "text-muted-foreground"
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
               <Icon className="w-5 h-5" />
