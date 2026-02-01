@@ -282,6 +282,36 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -293,6 +323,10 @@ export type Database = {
           gender: string | null
           height_cm: number | null
           id: string
+          location_consent: boolean | null
+          location_lat: number | null
+          location_lng: number | null
+          region: string | null
           updated_at: string
           user_id: string
           weight_kg: number | null
@@ -307,6 +341,10 @@ export type Database = {
           gender?: string | null
           height_cm?: number | null
           id?: string
+          location_consent?: boolean | null
+          location_lat?: number | null
+          location_lng?: number | null
+          region?: string | null
           updated_at?: string
           user_id: string
           weight_kg?: number | null
@@ -321,6 +359,10 @@ export type Database = {
           gender?: string | null
           height_cm?: number | null
           id?: string
+          location_consent?: boolean | null
+          location_lat?: number | null
+          location_lng?: number | null
+          region?: string | null
           updated_at?: string
           user_id?: string
           weight_kg?: number | null

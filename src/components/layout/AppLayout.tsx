@@ -2,9 +2,10 @@ import { ReactNode, useState } from "react";
 import { Sidebar } from "./Sidebar";
 import { MobileNav } from "./MobileNav";
 import { Button } from "@/components/ui/button";
-import { Bell, Menu, X } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { NotificationBell } from "@/components/notifications/NotificationBell";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -37,7 +38,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                 variant="ghost"
                 size="icon"
                 onClick={() => setSidebarOpen(true)}
-                className="md:hidden"
+                className="md:hidden min-h-[44px] min-w-[44px]"
               >
                 <Menu className="w-5 h-5" />
               </Button>
@@ -47,10 +48,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-accent rounded-full" />
-            </Button>
+            <NotificationBell />
           </div>
         </header>
 

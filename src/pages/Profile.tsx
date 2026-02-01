@@ -6,10 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import { User, Mail, Ruler, Scale, Droplet, Save, Loader2 } from "lucide-react";
+import { User, Mail, Ruler, Scale, Droplet, Save, Loader2, Globe, MapPin, Shield } from "lucide-react";
 
 interface Profile {
   id: string;
@@ -21,9 +22,18 @@ interface Profile {
   weight_kg: number | null;
   blood_type: string | null;
   emergency_contact: string | null;
+  region: string | null;
+  location_consent: boolean | null;
 }
 
 const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+
+const regions = [
+  { code: "uk", name: "United Kingdom", flag: "🇬🇧", description: "NHS guidelines" },
+  { code: "us", name: "United States", flag: "🇺🇸", description: "CDC/FDA guidelines" },
+  { code: "india", name: "India", flag: "🇮🇳", description: "ICMR/NHP guidelines" },
+  { code: "global", name: "Other / Global", flag: "🌍", description: "WHO guidelines" },
+];
 
 export default function ProfilePage() {
   const { user } = useAuthContext();
@@ -38,6 +48,8 @@ export default function ProfilePage() {
     weight_kg: "",
     blood_type: "",
     emergency_contact: "",
+    region: "global",
+    location_consent: false,
   });
 
   useEffect(() => {
@@ -65,6 +77,8 @@ export default function ProfilePage() {
         weight_kg: data.weight_kg?.toString() || "",
         blood_type: data.blood_type || "",
         emergency_contact: data.emergency_contact || "",
+        region: data.region || "global",
+        location_consent: data.location_consent || false,
       });
     }
     setLoading(false);
@@ -85,6 +99,8 @@ export default function ProfilePage() {
         weight_kg: formData.weight_kg ? parseFloat(formData.weight_kg) : null,
         blood_type: formData.blood_type || null,
         emergency_contact: formData.emergency_contact || null,
+        region: formData.region || "global",
+        location_consent: formData.location_consent,
       })
       .eq("id", profile.id);
 
@@ -96,6 +112,55 @@ export default function ProfilePage() {
     }
 
     setSaving(false);
+  };
+
+  const handleLocationToggle = async (checked: boolean) => {
+    if (checked) {
+      // Request location permission
+      try {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: false,
+            timeout: 10000,
+            maximumAge: 300000,
+          });
+        });
+
+        const { latitude, longitude } = position.coords;
+
+        if (profile) {
+          await supabase
+            .from("profiles")
+            .update({
+              location_lat: latitude,
+              location_lng: longitude,
+              location_consent: true,
+            })
+            .eq("id", profile.id);
+        }
+
+        setFormData((prev) => ({ ...prev, location_consent: true }));
+        toast.success("Location enabled for personalized guidance");
+      } catch (error) {
+        toast.error("Location access denied");
+        setFormData((prev) => ({ ...prev, location_consent: false }));
+      }
+    } else {
+      // Revoke location consent
+      if (profile) {
+        await supabase
+          .from("profiles")
+          .update({
+            location_lat: null,
+            location_lng: null,
+            location_consent: false,
+          })
+          .eq("id", profile.id);
+      }
+
+      setFormData((prev) => ({ ...prev, location_consent: false }));
+      toast.success("Location disabled");
+    }
   };
 
   if (loading) {
@@ -142,6 +207,77 @@ export default function ProfilePage() {
               </div>
             </div>
           </CardHeader>
+        </Card>
+      </motion.div>
+
+      {/* Region & Location Settings */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15 }}
+      >
+        <Card>
+          <CardHeader className="pb-3 md:pb-4">
+            <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+              <Globe className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+              Region & Location
+            </CardTitle>
+            <CardDescription>
+              Customize health guidance based on your location
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label className="text-xs md:text-sm">Your Region</Label>
+              <Select
+                value={formData.region}
+                onValueChange={(v) => setFormData((prev) => ({ ...prev, region: v }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your region..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {regions.map((region) => (
+                    <SelectItem key={region.code} value={region.code}>
+                      <span className="flex items-center gap-2">
+                        <span>{region.flag}</span>
+                        <span>{region.name}</span>
+                        <span className="text-muted-foreground text-xs">- {region.description}</span>
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground mt-1">
+                This helps DVDL Bot provide region-specific health guidance and emergency contacts.
+              </p>
+            </div>
+
+            <div className="flex items-center justify-between p-3 md:p-4 bg-muted rounded-lg">
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-medium text-sm">Share Location</p>
+                  <p className="text-xs text-muted-foreground">
+                    Enable for nearby healthcare resources
+                  </p>
+                </div>
+              </div>
+              <Switch
+                checked={formData.location_consent}
+                onCheckedChange={handleLocationToggle}
+              />
+            </div>
+
+            {formData.location_consent && (
+              <div className="flex items-start gap-2 p-3 bg-primary/5 rounded-lg text-xs">
+                <Shield className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                <p className="text-muted-foreground">
+                  Your location is stored securely and never shared with third parties.
+                </p>
+              </div>
+            )}
+          </CardContent>
         </Card>
       </motion.div>
 
@@ -230,6 +366,7 @@ export default function ProfilePage() {
                 </Label>
                 <Input
                   type="number"
+                  inputMode="numeric"
                   placeholder="175"
                   value={formData.height_cm}
                   onChange={(e) => setFormData((prev) => ({ ...prev, height_cm: e.target.value }))}
@@ -242,6 +379,7 @@ export default function ProfilePage() {
                 </Label>
                 <Input
                   type="number"
+                  inputMode="decimal"
                   step="0.1"
                   placeholder="70"
                   value={formData.weight_kg}

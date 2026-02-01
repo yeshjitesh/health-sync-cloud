@@ -2,11 +2,11 @@ import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
-  MessageCircle,
-  Activity,
-  FileText,
+  Bot,
+  Stethoscope,
+  ClipboardList,
   Pill,
-  User,
+  UserCircle,
   LogOut,
   Heart,
   ChevronLeft,
@@ -19,11 +19,11 @@ import { useAuthContext } from "@/contexts/AuthContext";
 
 const navItems = [
   { path: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-  { path: "/chat", icon: MessageCircle, label: "DVDL Bot" },
-  { path: "/predict", icon: Activity, label: "Predictor" },
-  { path: "/records", icon: FileText, label: "Records" },
+  { path: "/chat", icon: Bot, label: "DVDL Bot" },
+  { path: "/predict", icon: Stethoscope, label: "Predictor" },
+  { path: "/records", icon: ClipboardList, label: "Records" },
   { path: "/medications", icon: Pill, label: "Medications" },
-  { path: "/profile", icon: User, label: "Profile" },
+  { path: "/profile", icon: UserCircle, label: "Profile" },
 ];
 
 interface SidebarProps {
@@ -73,7 +73,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
               to={item.path}
               onClick={handleNavClick}
               className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 min-h-[44px]",
                 isActive
                   ? "bg-sidebar-primary text-sidebar-primary-foreground"
                   : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
@@ -116,7 +116,7 @@ export function Sidebar({ onNavigate }: SidebarProps) {
           size="sm"
           onClick={handleSignOut}
           className={cn(
-            "w-full mt-2 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent",
+            "w-full mt-2 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent min-h-[44px]",
             collapsed ? "px-2" : ""
           )}
         >
