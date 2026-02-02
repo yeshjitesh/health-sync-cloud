@@ -1,242 +1,230 @@
 
-# Comprehensive DVDL-Health Enhancement Plan
+# DVDS-Care Comprehensive Enhancement Plan
 
 ## Overview
-This plan covers major UI/UX improvements, new features, location-based chatbot enhancements, reminder notifications, and homepage updates for the Diu Vanja Darji Samaj community.
+This plan addresses the rebranding to DVDS-Care, logo/favicon updates, bug fixes for profile and location settings, Predictor page mobile issues, real-time sync improvements, homepage enhancements, and end-to-end testing with fixes.
 
 ---
 
-## 1. Icon and Design Updates
+## 1. Branding Updates
 
-### Icon Consistency
-- Update all navigation icons to match feature purposes:
-  - Dashboard: `LayoutDashboard`
-  - DVDL Bot: `Bot` 
-  - Predict: `Stethoscope` (medical assessment)
-  - Records: `ClipboardList` (health records)
-  - Medications: `Pill`
-  - Profile: `UserCircle`
+### Application Name Change (DVDL-Health → DVDS-Care)
+Files to update:
+- `index.html` - Title, meta tags
+- `src/pages/Landing.tsx` - Header, testimonials, CTA
+- `src/components/layout/Sidebar.tsx` - Logo text
+- `src/components/layout/AppLayout.tsx` - Header title
+- `src/components/layout/Footer.tsx` - Brand name, disclaimer
+- `src/pages/Chat.tsx` - Bot references
+- `src/pages/Profile.tsx` - Bot mention
+- `supabase/functions/chat/index.ts` - AI system prompt
 
-### Color and Button Fixes
-- Ensure all gradient buttons use consistent `gradient-primary` or `gradient-accent` classes
-- Fix any low-contrast text issues (especially in dark mode)
-- Add proper hover states and active states for all interactive elements
-- Standardize icon sizes across mobile (20px) and desktop (24px)
+### Logo & Favicon Update
+- Copy user-uploaded logo to `public/logo.png`
+- Update `index.html` with new favicon reference
+- Update Landing page header to use custom logo
+- Update Sidebar logo to use custom image
+- Update Footer logo
 
 ---
 
-## 2. Real-Time Synchronization Enhancements
+## 2. Profile Page Fixes
 
-### Current Status
-Real-time is already implemented for:
-- Health records
-- Medications and logs
-- Chat messages
+### Current Issues
+1. Location settings not saving properly
+2. Profile form not persisting all fields
+3. Location consent toggle not syncing with geolocation
 
-### Enhancements Needed
-- Add real-time sync for chat conversations list
+### Fixes Required
+- **Profile.tsx**: 
+  - Fix handleSave to ensure profile.id exists before update
+  - Add error handling for missing profile
+  - Ensure location_consent updates are reflected in real-time
+  - Add real-time subscription to profile changes
+  - Fix region selection to sync with AI bot
+
+- **useUserLocation.ts**:
+  - Ensure location updates trigger UI refresh
+  - Add proper error handling for geolocation failures
+
+---
+
+## 3. Predictor Page Mobile Fix
+
+### Current Issue
+Tab labels hidden on mobile: `<span className="hidden sm:inline">{disease.name}</span>`
+
+### Fix
+- Always show disease type names on mobile
+- Adjust TabsTrigger styling for mobile readability
+- Make text smaller but visible on mobile
+
+---
+
+## 4. Homepage Enhancements
+
+### Interactive, Animated, Modern Design
+- Add floating animated background elements
+- Add animated health icons that move subtly
+- Add particle effects or animated gradients
+- Use more vibrant entrance animations
+- Add scroll-triggered animations for sections
+
+### Visual Improvements
+- Add health-related stock images from Unsplash
+- Add animated statistics counter
+- Improve "Learn More" button visibility (fix low contrast)
+- Add interactive feature cards with hover effects
+- Add community images/illustrations
+
+### Footer Updates
+- Fix government healthcare links:
+  - UK: NHS (https://www.nhs.uk)
+  - US: CDC (https://www.cdc.gov)
+  - India: National Health Portal (https://www.nhp.gov.in)
+  - Add more resources per region
+
+---
+
+## 5. Real-Time Sync Improvements
+
+### Current Gaps
+- Profile changes don't sync live
+- Dashboard needs refresh after some updates
+- Chat conversations list not real-time
+- Disease assessments not real-time
+
+### Fixes
+- Add real-time subscription to profile in useUserLocation
+- Add real-time sync for chat conversations
+- Ensure Dashboard auto-updates on all record changes
 - Add real-time sync for disease assessments
-- Add optimistic updates for better UX
-- Ensure Dashboard auto-refreshes when records change
+- Add optimistic UI updates where applicable
 
 ---
 
-## 3. Homepage Redesign for Diu Vanja Darji Samaj
+## 6. Dynamic Record Types & Categories
 
-### New Landing Page Structure
-```text
-+--------------------------------+
-|  Header with Logo & Sign In   |
-+--------------------------------+
-|         Hero Section           |
-|  "Health for Diu Vanja Darji   |
-|        Samaj Community"        |
-+--------------------------------+
-|     Community Impact Stats     |
-|  (Members Served, Health       |
-|   Records Tracked, etc.)       |
-+--------------------------------+
-|        Feature Cards           |
-|  (Bot, Predict, Records, Meds) |
-+--------------------------------+
-|    Community Health Focus      |
-|  (Diabetes, Heart Disease,     |
-|   Regional Health Awareness)   |
-+--------------------------------+
-|          Testimonials          |
-+--------------------------------+
-|  Footer with Legal Links       |
-|  (Privacy, Terms, About,       |
-|   Contact, Disclaimer)         |
-+--------------------------------+
-```
-
-### Legal Pages to Create
-- `/privacy` - Privacy Policy page
-- `/terms` - Terms of Service page
-- `/about` - About the platform and community
-- `/contact` - Contact information
-
----
-
-## 4. Location-Based Chatbot Feature
-
-### User Region Selection (After Login)
-Add a region selector modal/prompt that appears after first login:
-- **UK** - Use NHS guidelines and resources
-- **US** - Use CDC/FDA/AHA guidelines
-- **India** - Use ICMR/NHP guidelines
-- **Other/Global** - Use WHO guidelines
-
-### Database Changes
-Add to profiles table:
-- `region` (text) - User's selected region code
-- `location_lat` (numeric) - Latitude from geolocation
-- `location_lng` (numeric) - Longitude from geolocation
-- `location_consent` (boolean) - Whether user granted location permission
-
-### Location Permission Flow
-1. Show location permission request after region selection
-2. If granted, store coordinates for future location-based features
-3. If denied, use region-based defaults only
-
-### Chat Edge Function Enhancement
-Update the system prompt to include region-specific context:
-- UK: Reference NHS services, A&E, GP appointments
-- US: Reference primary care, insurance considerations
-- India: Reference government health schemes, local hospitals
-- Include regional emergency numbers
-
----
-
-## 5. Reminder Notifications Edge Function
-
-### New Edge Function: `send-reminders`
-Create a scheduled function to:
-1. Check medications with `refill_reminder_date` approaching
-2. Check medications due for today based on `time_of_day`
-3. Send in-app notifications (stored in new `notifications` table)
-
-### New Database Table: `notifications`
-```sql
-CREATE TABLE notifications (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL,
-  type TEXT NOT NULL, -- 'medication', 'refill', 'health_tip'
-  title TEXT NOT NULL,
-  message TEXT NOT NULL,
-  is_read BOOLEAN DEFAULT false,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-```
-
-### Notification Bell Enhancement
-- Show unread count on the bell icon
-- Add notification dropdown/sheet showing recent notifications
-- Mark as read when opened
-
----
-
-## 6. Dynamic Health Record Form Improvements
-
-### Already Implemented
-- Auto-unit assignment based on category
-- Dual input for blood pressure (systolic/diastolic)
+### Current Implementation
+Already has dynamic categories with auto-units
 
 ### Enhancements
-- Add BMI calculation when weight is entered (if height in profile)
-- Add validation ranges for each vital type
-- Add visual indicators for normal/abnormal values
-- Improve mobile keyboard handling (numeric keyboards)
+- Make record types change based on category selection
+- Auto-suggest record types based on category (e.g., "vital_sign" for blood_pressure)
+- Add more dynamic validation per category type
+- Add normal range indicators
 
 ---
 
-## 7. Professional UI Polish
+## 7. UI/UX Polishing
 
-### Mobile Navigation
-- Increase touch targets to 44px minimum
-- Add subtle haptic feedback indicators
-- Improve icon spacing and alignment
+### Button & Icon Fixes
+- Ensure all buttons have proper contrast
+- Standardize icon sizes (20px mobile, 24px desktop)
+- Fix "Learn More" button to have visible border/styling
+- Add proper hover states to all interactive elements
 
-### Card Components
-- Add consistent shadow/elevation
-- Improve card header styling
-- Add loading skeletons for better perceived performance
-
-### Form Elements
-- Consistent label sizing
-- Proper input focus rings
-- Error state styling
+### Visibility Improvements
+- Improve text contrast throughout
+- Ensure all dropdowns and selects are readable
+- Fix any dark mode contrast issues
 
 ---
 
-## Technical Implementation Summary
+## Technical Implementation
 
-### Database Changes
-1. Add columns to `profiles`: `region`, `location_lat`, `location_lng`, `location_consent`
-2. Create `notifications` table with RLS policies
+### Files to Create
+None - all enhancements to existing files
 
-### New Edge Functions
-1. `send-reminders` - Scheduled function for medication reminders
+### Files to Modify
 
-### New Pages
-1. `/privacy` - Privacy Policy
-2. `/terms` - Terms of Service  
-3. `/about` - About page
-4. `/contact` - Contact page
+1. **index.html**
+   - Update title to "DVDS-Care"
+   - Add favicon reference to uploaded logo
 
-### New Components
-1. `RegionSelector` - Modal for region selection after login
-2. `LocationPermission` - Location permission request component
-3. `NotificationBell` - Enhanced notification dropdown
-4. `Footer` - Site-wide footer with legal links
+2. **src/pages/Landing.tsx**
+   - Replace "DVDL-Health" with "DVDS-Care"
+   - Add animated background elements
+   - Add scroll animations
+   - Add health images from Unsplash
+   - Fix "Learn More" button styling
+   - Add animated counter for stats
+   - Use custom logo image
 
-### Updated Components
-- `Landing.tsx` - Complete redesign with community focus
-- `Chat.tsx` - Region-aware chatbot
-- `AppLayout.tsx` - Add notification bell with dropdown
-- `MobileNav.tsx` - Updated icons
-- `Sidebar.tsx` - Updated icons
+3. **src/components/layout/Sidebar.tsx**
+   - Update logo text to "DVDS-Care"
+   - Use custom logo image
 
-### Updated Edge Functions
-- `chat/index.ts` - Region-aware system prompt
+4. **src/components/layout/AppLayout.tsx**
+   - Update header title to "DVDS-Care"
+
+5. **src/components/layout/Footer.tsx**
+   - Update brand name to "DVDS-Care"
+   - Fix healthcare resource links
+   - Add more regional resources
+
+6. **src/pages/Predict.tsx**
+   - Fix TabsTrigger to show names on mobile
+   - Improve mobile layout
+
+7. **src/pages/Profile.tsx**
+   - Fix profile saving logic
+   - Add real-time subscription
+   - Improve location toggle behavior
+   - Add better error handling
+
+8. **src/pages/Chat.tsx**
+   - Update bot references to DVDS Bot
+   - Ensure region syncs properly
+
+9. **src/hooks/useUserLocation.ts**
+   - Add real-time subscription for profile changes
+   - Improve location consent handling
+
+10. **src/components/records/DynamicRecordForm.tsx**
+    - Auto-select record type based on category
+    - Add dynamic suggestions
+
+11. **supabase/functions/chat/index.ts**
+    - Update bot name to DVDS Bot
 
 ---
 
-## File Changes Summary
+## End-to-End Testing Checklist
 
-### New Files (12)
-- `src/pages/Privacy.tsx`
-- `src/pages/Terms.tsx`
-- `src/pages/About.tsx`
-- `src/pages/Contact.tsx`
-- `src/components/layout/Footer.tsx`
-- `src/components/location/RegionSelector.tsx`
-- `src/components/location/LocationPermission.tsx`
-- `src/components/notifications/NotificationBell.tsx`
-- `src/hooks/useUserLocation.ts`
-- `src/hooks/useNotifications.ts`
-- `src/hooks/useRealtimeNotifications.ts`
-- `supabase/functions/send-reminders/index.ts`
-
-### Modified Files (12)
-- `src/pages/Landing.tsx` - Community-focused redesign
-- `src/pages/Chat.tsx` - Region-aware messaging
-- `src/pages/Profile.tsx` - Add region settings
-- `src/components/layout/AppLayout.tsx` - Add notifications
-- `src/components/layout/MobileNav.tsx` - Updated icons
-- `src/components/layout/Sidebar.tsx` - Updated icons
-- `src/App.tsx` - Add new routes
-- `src/contexts/AuthContext.tsx` - Add region state
-- `src/index.css` - Additional utility classes
-- `supabase/functions/chat/index.ts` - Region-aware prompts
-- Database migration for new columns and table
+After implementation, verify:
+- [ ] Homepage loads with new branding and animations
+- [ ] Logo and favicon display correctly
+- [ ] "Learn More" button is visible and clickable
+- [ ] Sign in with Google works
+- [ ] Region selector appears after first login
+- [ ] Profile page loads all fields correctly
+- [ ] Profile save button persists all data
+- [ ] Location toggle works and saves
+- [ ] Predictor page shows all disease types on mobile
+- [ ] Health records update in real-time (no refresh needed)
+- [ ] Chat syncs with selected region
+- [ ] Footer links work correctly
+- [ ] Mobile navigation works
+- [ ] All buttons are visible and styled correctly
 
 ---
 
 ## Security Considerations
-- Location data is optional and stored securely with RLS
-- Region selection is user-controlled
-- All notification data protected by user-specific RLS policies
-- No personally identifiable health data exposed in notifications
+- No new security changes required
+- All existing RLS policies remain in place
+- Location data remains protected
 
+---
+
+## Summary of Changes
+
+| Area | Changes |
+|------|---------|
+| Branding | DVDL-Health → DVDS-Care, new logo/favicon |
+| Profile | Fix saving, location sync, real-time updates |
+| Predictor | Show disease names on mobile |
+| Homepage | Animations, images, fix Learn More button |
+| Footer | Fix government healthcare links |
+| Real-time | Add subscriptions for profile, conversations |
+| Records | Dynamic type selection based on category |
