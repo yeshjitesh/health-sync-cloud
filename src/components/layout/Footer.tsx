@@ -81,11 +81,7 @@ export function Footer() {
 
         {/* Disclaimer & Copyright */}
         <div className="border-t border-white/10 pt-6">
-          <p className="text-white/40 text-xs text-center mb-4">
-            ⚠️ Medical Disclaimer: DVDS-Care provides AI-powered health information for educational purposes only. 
-            It does not replace professional medical advice, diagnosis, or treatment. Always consult a qualified 
-            healthcare provider for medical concerns.
-          </p>
+          <p className="text-white/40 text-xs text-center mb-4">⚠️ Medical Disclaimer: DVDS-Health provides AI-powered health information for educational purposes only. It does not replace professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider for medical concerns.</p>
           <p className="text-white/30 text-xs text-center">
             © {new Date().getFullYear()} DVDS-Care. Made with ❤️ for the Diu Vanja Darji Samaj community.
           </p>
