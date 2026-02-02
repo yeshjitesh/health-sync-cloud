@@ -1,16 +1,14 @@
 import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
-
 export function Footer() {
-  return (
-    <footer className="border-t border-white/10 py-8 mt-auto">
+  return <footer className="border-t border-white/10 py-8 mt-auto">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-lg overflow-hidden">
-                <img src="/logo.png" alt="DVDS-Care" className="w-full h-full object-cover" />
+                <img alt="DVDS-Care" className="w-full h-full object-cover" src="https://inxqwecffjulxsvkfwro.supabase.co/storage/v1/object/public/logo//199664-removebg-preview.png" />
               </div>
               <span className="font-bold text-white">DVDS-Care</span>
             </div>
@@ -58,42 +56,22 @@ export function Footer() {
             <h4 className="font-semibold text-white mb-4">Health Resources</h4>
             <ul className="space-y-2">
               <li>
-                <a 
-                  href="https://www.nhs.uk" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-white/60 hover:text-white text-sm transition-colors"
-                >
+                <a href="https://www.nhs.uk" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-white text-sm transition-colors">
                   🇬🇧 NHS (UK)
                 </a>
               </li>
               <li>
-                <a 
-                  href="https://www.cdc.gov" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-white/60 hover:text-white text-sm transition-colors"
-                >
+                <a href="https://www.cdc.gov" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-white text-sm transition-colors">
                   🇺🇸 CDC (USA)
                 </a>
               </li>
               <li>
-                <a 
-                  href="https://www.nhp.gov.in" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-white/60 hover:text-white text-sm transition-colors"
-                >
+                <a href="https://www.nhp.gov.in" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-white text-sm transition-colors">
                   🇮🇳 NHP (India)
                 </a>
               </li>
               <li>
-                <a 
-                  href="https://www.who.int" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-white/60 hover:text-white text-sm transition-colors"
-                >
+                <a href="https://www.who.int" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-white text-sm transition-colors">
                   🌍 WHO (Global)
                 </a>
               </li>
@@ -113,6 +91,5 @@ export function Footer() {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 }
