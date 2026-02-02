@@ -54,7 +54,7 @@ export function Sidebar({
       {/* Logo */}
       <div className="flex items-center gap-3 p-4 border-b border-sidebar-border">
         <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-md">
-          <img alt="DVDS-Care" className="w-full h-full object-cover" src="https://inxqwecffjulxsvkfwro.supabase.co/storage/v1/object/public/logo//199664-removebg-preview.png" />
+          <img alt="DVDS-Care" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/pw/AP1GczNvSevVNr581y9WAc8wDfLQM4HvCxDWrnQLZ39z9n2I-GLkbaedNW78tWgPhPBEulvcG8GuNmn4HWAGh0iOpxUflgql67ItZ2D14YPXT6LJZXtFtLlV4Ed33BFESDhz0B2Pm0Lss5-riJpuL_3PB18Ldg=w500-h500-s-no?authuser=0" />
         </div>
         {!collapsed && <span className="text-lg font-bold tracking-tight">DVDS-Care</span>}
       </div>
