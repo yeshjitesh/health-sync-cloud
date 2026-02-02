@@ -10,7 +10,7 @@ export function Footer() {
               <div className="w-8 h-8 rounded-lg overflow-hidden">
                 <img alt="DVDS-Care" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/pw/AP1GczNvSevVNr581y9WAc8wDfLQM4HvCxDWrnQLZ39z9n2I-GLkbaedNW78tWgPhPBEulvcG8GuNmn4HWAGh0iOpxUflgql67ItZ2D14YPXT6LJZXtFtLlV4Ed33BFESDhz0B2Pm0Lss5-riJpuL_3PB18Ldg=w500-h500-s-no?authuser=0" />
               </div>
-              <span className="font-bold text-white">DVDS-Care</span>
+              <span className="font-bold text-white">DVDS-Health</span>
             </div>
             <p className="text-white/50 text-sm">
               AI-powered health management for the Diu Vanja Darji Samaj community.
