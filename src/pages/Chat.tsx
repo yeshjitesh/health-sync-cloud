@@ -56,6 +56,27 @@ export default function Chat() {
   useEffect(() => {
     if (user) {
       fetchConversations();
+      
+      // Real-time subscription for conversations
+      const channel = supabase
+        .channel("chat-conversations-changes")
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "chat_conversations",
+            filter: `user_id=eq.${user.id}`,
+          },
+          () => {
+            fetchConversations();
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
     }
   }, [user]);
 
@@ -314,7 +335,7 @@ export default function Chat() {
         size="sm"
         variant="outline"
         onClick={createNewConversation}
-        className="w-full mb-3"
+        className="w-full mb-3 h-10"
       >
         <Plus className="w-4 h-4 mr-2" />
         New Chat
@@ -322,7 +343,7 @@ export default function Chat() {
       {conversations.map((conv) => (
         <div
           key={conv.id}
-          className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer group ${
+          className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer group min-h-[44px] ${
             currentConversation?.id === conv.id
               ? "bg-primary text-primary-foreground"
               : "hover:bg-muted"
@@ -334,7 +355,7 @@ export default function Chat() {
           <Button
             size="icon"
             variant="ghost"
-            className="w-6 h-6 opacity-0 group-hover:opacity-100"
+            className="w-8 h-8 opacity-0 group-hover:opacity-100"
             onClick={(e) => {
               e.stopPropagation();
               deleteConversation(conv.id);
@@ -383,7 +404,7 @@ export default function Chat() {
                   <Bot className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-base">DVDL Bot</CardTitle>
+                  <CardTitle className="text-base">DVDS Bot</CardTitle>
                   <p className="text-xs text-muted-foreground">Your AI Health Assistant</p>
                 </div>
               </div>
@@ -393,15 +414,16 @@ export default function Chat() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowRegionSelector(true)}
-                  className="text-xs h-8"
+                  className="text-xs h-9 px-2 sm:px-3"
                 >
                   <Globe className="w-3 h-3 mr-1" />
-                  {getRegionLabel(location?.region || "global")}
+                  <span className="hidden sm:inline">{getRegionLabel(location?.region || "global")}</span>
+                  <span className="sm:hidden">{location?.region === "uk" ? "🇬🇧" : location?.region === "us" ? "🇺🇸" : location?.region === "india" ? "🇮🇳" : "🌍"}</span>
                 </Button>
                 {isMobile && (
                   <Sheet open={showHistory} onOpenChange={setShowHistory}>
                     <SheetTrigger asChild>
-                      <Button variant="ghost" size="icon">
+                      <Button variant="ghost" size="icon" className="h-10 w-10">
                         <History className="w-5 h-5" />
                       </Button>
                     </SheetTrigger>
@@ -424,7 +446,7 @@ export default function Chat() {
             <div className="flex items-start gap-2 p-2 md:p-3 mb-3 md:mb-4 bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-200 rounded-lg text-xs md:text-sm shrink-0">
               <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
               <p>
-                DVDL Bot provides general health information only. Always consult a
+                DVDS Bot provides general health information only. Always consult a
                 healthcare provider for medical concerns.
               </p>
             </div>
@@ -464,7 +486,7 @@ export default function Chat() {
                   <div className="text-center py-8 md:py-12 text-muted-foreground">
                     <Bot className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 md:mb-4 opacity-50" />
                     <p className="text-base md:text-lg font-medium">
-                      Start a conversation with DVDL Bot
+                      Start a conversation with DVDS Bot
                     </p>
                     <p className="text-xs md:text-sm mt-2">
                       Ask about symptoms, health tips, or wellness questions
@@ -480,7 +502,7 @@ export default function Chat() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Ask DVDL Bot about your health..."
+                placeholder="Ask DVDS Bot about your health..."
                 className="resize-none min-h-[44px] md:min-h-[50px] text-sm md:text-base"
                 disabled={isLoading}
                 rows={1}

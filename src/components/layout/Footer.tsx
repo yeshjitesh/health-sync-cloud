@@ -9,10 +9,10 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg gradient-primary">
-                <Heart className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 rounded-lg overflow-hidden">
+                <img src="/logo.png" alt="DVDS-Care" className="w-full h-full object-cover" />
               </div>
-              <span className="font-bold text-white">DVDL-Health</span>
+              <span className="font-bold text-white">DVDS-Care</span>
             </div>
             <p className="text-white/50 text-sm">
               AI-powered health management for the Diu Vanja Darji Samaj community.
@@ -55,26 +55,46 @@ export function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="font-semibold text-white mb-4">Resources</h4>
+            <h4 className="font-semibold text-white mb-4">Health Resources</h4>
             <ul className="space-y-2">
               <li>
                 <a 
-                  href="https://www.who.int/" 
+                  href="https://www.nhs.uk" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-white/60 hover:text-white text-sm transition-colors"
                 >
-                  WHO Guidelines
+                  🇬🇧 NHS (UK)
                 </a>
               </li>
               <li>
                 <a 
-                  href="https://www.nhp.gov.in/" 
+                  href="https://www.cdc.gov" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-white/60 hover:text-white text-sm transition-colors"
                 >
-                  National Health Portal
+                  🇺🇸 CDC (USA)
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://www.nhp.gov.in" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-white/60 hover:text-white text-sm transition-colors"
+                >
+                  🇮🇳 NHP (India)
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://www.who.int" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-white/60 hover:text-white text-sm transition-colors"
+                >
+                  🌍 WHO (Global)
                 </a>
               </li>
             </ul>
@@ -84,12 +104,12 @@ export function Footer() {
         {/* Disclaimer & Copyright */}
         <div className="border-t border-white/10 pt-6">
           <p className="text-white/40 text-xs text-center mb-4">
-            ⚠️ Medical Disclaimer: DVDL-Health provides AI-powered health information for educational purposes only. 
+            ⚠️ Medical Disclaimer: DVDS-Care provides AI-powered health information for educational purposes only. 
             It does not replace professional medical advice, diagnosis, or treatment. Always consult a qualified 
             healthcare provider for medical concerns.
           </p>
           <p className="text-white/30 text-xs text-center">
-            © {new Date().getFullYear()} DVDL-Health. Made with ❤️ for the Diu Vanja Darji Samaj community.
+            © {new Date().getFullYear()} DVDS-Care. Made with ❤️ for the Diu Vanja Darji Samaj community.
           </p>
         </div>
       </div>

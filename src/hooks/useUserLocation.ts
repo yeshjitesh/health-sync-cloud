@@ -34,7 +34,7 @@ export function useUserLocation() {
   }, [user]);
 
   const updateRegion = async (region: string) => {
-    if (!user) return;
+    if (!user) return false;
 
     const { error } = await supabase
       .from("profiles")
@@ -44,13 +44,14 @@ export function useUserLocation() {
     if (!error) {
       setLocation((prev) => prev ? { ...prev, region } : null);
       setNeedsRegionSelection(false);
+      return true;
     }
 
-    return !error;
+    return false;
   };
 
   const updateLocation = async (lat: number, lng: number, consent: boolean) => {
-    if (!user) return;
+    if (!user) return false;
 
     const { error } = await supabase
       .from("profiles")
@@ -67,13 +68,14 @@ export function useUserLocation() {
           ? { ...prev, location_lat: lat, location_lng: lng, location_consent: consent }
           : null
       );
+      return true;
     }
 
-    return !error;
+    return false;
   };
 
   const revokeLocationConsent = async () => {
-    if (!user) return;
+    if (!user) return false;
 
     const { error } = await supabase
       .from("profiles")
@@ -90,14 +92,48 @@ export function useUserLocation() {
           ? { ...prev, location_lat: null, location_lng: null, location_consent: false }
           : null
       );
+      return true;
     }
 
-    return !error;
+    return false;
   };
 
   useEffect(() => {
     if (user) {
       fetchLocation();
+
+      // Real-time subscription for profile location changes
+      const channel = supabase
+        .channel("profile-location-changes")
+        .on(
+          "postgres_changes",
+          {
+            event: "UPDATE",
+            schema: "public",
+            table: "profiles",
+            filter: `user_id=eq.${user.id}`,
+          },
+          (payload) => {
+            const updated = payload.new as {
+              region: string;
+              location_lat: number | null;
+              location_lng: number | null;
+              location_consent: boolean;
+            };
+            setLocation({
+              region: updated.region || "global",
+              location_lat: updated.location_lat,
+              location_lng: updated.location_lng,
+              location_consent: updated.location_consent || false,
+            });
+            setNeedsRegionSelection(!updated.region || updated.region === "global");
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
     }
   }, [user, fetchLocation]);
 

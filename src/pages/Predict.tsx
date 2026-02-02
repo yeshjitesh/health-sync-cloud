@@ -348,9 +348,9 @@ export default function Predict() {
               >
                 <TabsList className="grid grid-cols-4 mb-4 md:mb-6 h-auto">
                   {diseaseTypes.map((disease) => (
-                    <TabsTrigger key={disease.id} value={disease.id} className="flex-col gap-1 py-2 md:py-3 text-xs md:text-sm">
+                    <TabsTrigger key={disease.id} value={disease.id} className="flex-col gap-1 py-2 md:py-3 text-[10px] sm:text-xs md:text-sm">
                       <disease.icon className="w-4 h-4 md:w-5 md:h-5" />
-                      <span className="hidden sm:inline">{disease.name}</span>
+                      <span>{disease.name}</span>
                     </TabsTrigger>
                   ))}
                 </TabsList>
