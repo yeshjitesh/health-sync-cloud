@@ -222,7 +222,7 @@ export default function Landing() {
               scale: 1.05,
               rotate: 5
             }} className="w-10 h-10 md:w-12 md:h-12 rounded-xl overflow-hidden shadow-lg">
-                <img alt="DVDS-Care" className="w-full h-full object-cover" src="https://inxqwecffjulxsvkfwro.supabase.co/storage/v1/object/public/logo//199664-removebg-preview.png" />
+                <img alt="DVDS-Care" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/pw/AP1GczNvSevVNr581y9WAc8wDfLQM4HvCxDWrnQLZ39z9n2I-GLkbaedNW78tWgPhPBEulvcG8GuNmn4HWAGh0iOpxUflgql67ItZ2D14YPXT6LJZXtFtLlV4Ed33BFESDhz0B2Pm0Lss5-riJpuL_3PB18Ldg=w500-h500-s-no?authuser=0" />
               </motion.div>
               <span className="text-xl md:text-2xl font-bold text-white tracking-tight">
                 DVDS-Care
