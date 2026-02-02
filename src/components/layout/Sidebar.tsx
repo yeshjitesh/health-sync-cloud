@@ -19,7 +19,7 @@ import { useAuthContext } from "@/contexts/AuthContext";
 
 const navItems = [
   { path: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-  { path: "/chat", icon: Bot, label: "DVDL Bot" },
+  { path: "/chat", icon: Bot, label: "DVDS Bot" },
   { path: "/predict", icon: Stethoscope, label: "Predictor" },
   { path: "/records", icon: ClipboardList, label: "Records" },
   { path: "/medications", icon: Pill, label: "Medications" },
@@ -54,11 +54,11 @@ export function Sidebar({ onNavigate }: SidebarProps) {
     >
       {/* Logo */}
       <div className="flex items-center gap-3 p-4 border-b border-sidebar-border">
-        <div className="flex items-center justify-center w-10 h-10 rounded-xl gradient-primary shrink-0">
-          <Heart className="w-5 h-5 text-white" />
+        <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-md">
+          <img src="/logo.png" alt="DVDS-Care" className="w-full h-full object-cover" />
         </div>
         {!collapsed && (
-          <span className="text-lg font-bold tracking-tight">DVDL-Health</span>
+          <span className="text-lg font-bold tracking-tight">DVDS-Care</span>
         )}
       </div>
 
