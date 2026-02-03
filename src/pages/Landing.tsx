@@ -124,7 +124,7 @@ function AnimatedCounter({
       {count}
       {target.includes("+") ? "+" : ""}
       {target.includes("K") ? "K" : ""}
-      {target.includes("/") ? "/7" : ""}
+      {target.includes("/") ? "24/7" : ""}
       {target.includes("%") ? "%" : ""}
       {suffix}
     </span>;
