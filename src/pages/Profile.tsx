@@ -9,8 +9,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuthContext } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
-import { User, Mail, Ruler, Scale, Droplet, Save, Loader2, Globe, MapPin, Shield, CheckCircle } from "lucide-react";
+import { User, Mail, Ruler, Scale, Droplet, Save, Loader2, Globe, MapPin, CheckCircle, Languages } from "lucide-react";
+import { Language, languageNames } from "@/i18n/translations";
 
 interface Profile {
   id: string;
@@ -40,6 +42,7 @@ const regions = [
 
 export default function ProfilePage() {
   const { user } = useAuthContext();
+  const { language, setLanguage, t } = useLanguage();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -369,6 +372,42 @@ export default function ProfilePage() {
                 </div>
               </div>
             )}
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Language Settings */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15 }}
+      >
+        <Card>
+          <CardHeader className="pb-3 md:pb-4">
+            <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+              <Languages className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+              {t.language}
+            </CardTitle>
+            <CardDescription>
+              {t.selectLanguage}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Select
+              value={language}
+              onValueChange={(v) => setLanguage(v as Language)}
+            >
+              <SelectTrigger className="h-11">
+                <SelectValue placeholder={t.selectLanguage} />
+              </SelectTrigger>
+              <SelectContent>
+                {(Object.keys(languageNames) as Language[]).map((lang) => (
+                  <SelectItem key={lang} value={lang}>
+                    {languageNames[lang]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </CardContent>
         </Card>
       </motion.div>

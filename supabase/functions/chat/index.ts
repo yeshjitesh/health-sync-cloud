@@ -61,7 +61,7 @@ serve(async (req) => {
 
     const regionGuidance = regionPrompts[region] || regionPrompts.global;
 
-    const systemPrompt = `You are DVDS Bot, a helpful and knowledgeable AI Health Assistant for the DVDS-Care platform, designed specifically for the Diu Vanja Darji Samaj community. Your role is to provide accurate, helpful health information while being empathetic and supportive.
+    const systemPrompt = `You are DVDS Bot, a helpful and knowledgeable AI Health Assistant for the DVDS-Health platform, designed specifically for the Diu Vanja Darji Samaj community. Your role is to provide accurate, helpful health information while being empathetic and supportive.
 
 ${regionGuidance}
 

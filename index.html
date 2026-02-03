@@ -2,32 +2,53 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DVDS-Care | AI Health Companion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>DVDS-Health | AI Health Companion</title>
     <meta name="description" content="AI-powered health management for the Diu Vanja Darji Samaj community">
-    <meta name="author" content="DVDS-Care" />
-    <link rel="icon" type="image/png" href="https://storage.googleapis.com/gpt-engineer-file-uploads/7GQ8GxfR0mdYtMxKF3jXmCIRS1v2/uploads/1770049395115-199664-removebg-preview.png">
-
+    <meta name="author" content="DVDS-Health" />
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://inxqwecffjulxsvkfwro.supabase.co/storage/v1/object/public/logo//1769952242296.png">
+    <link rel="apple-touch-icon" href="https://inxqwecffjulxsvkfwro.supabase.co/storage/v1/object/public/logo//1769952242296.png">
     
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#14b8a6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="DVDS-Health">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/7GQ8GxfR0mdYtMxKF3jXmCIRS1v2/social-images/social-1770051862635-ChatGPT Image Feb 2, 2026, 05_02_25 PM.png">
+    <meta property="og:title" content="DVDS-Health | AI Health Companion">
+    <meta property="og:description" content="AI-powered health management for the Diu Vanja Darji Samaj community">
+    <meta property="og:image" content="https://inxqwecffjulxsvkfwro.supabase.co/storage/v1/object/public/logo//1769952242296.png">
 
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@DVDSCare" />
-    <meta name="twitter:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/7GQ8GxfR0mdYtMxKF3jXmCIRS1v2/social-images/social-1770051862635-ChatGPT Image Feb 2, 2026, 05_02_25 PM.png">
-    
-  
-  
-  
-  <meta property="og:title" content="DVDS-Care | AI Health Companion">
-  <meta name="twitter:title" content="DVDS-Care | AI Health Companion">
-  <meta property="og:description" content="AI-powered health management for the Diu Vanja Darji Samaj community">
-  <meta name="twitter:description" content="AI-powered health management for the Diu Vanja Darji Samaj community">
-</head>
+    <meta name="twitter:site" content="@DVDSHealth" />
+    <meta name="twitter:title" content="DVDS-Health | AI Health Companion">
+    <meta name="twitter:description" content="AI-powered health management for the Diu Vanja Darji Samaj community">
+    <meta name="twitter:image" content="https://inxqwecffjulxsvkfwro.supabase.co/storage/v1/object/public/logo//1769952242296.png">
+  </head>
 
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered:', registration.scope);
+            })
+            .catch((error) => {
+              console.log('SW registration failed:', error);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
