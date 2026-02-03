@@ -44,7 +44,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               </Button>
             )}
             <h1 className="text-lg md:text-xl font-semibold text-foreground truncate">
-              DVDS-Care
+              DVDS-Health
             </h1>
           </div>
           <div className="flex items-center gap-2">

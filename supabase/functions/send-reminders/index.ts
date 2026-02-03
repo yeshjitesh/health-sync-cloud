@@ -91,7 +91,7 @@ serve(async (req) => {
               user_id: med.user_id,
               type: "medication",
               title: `Time for ${med.name}`,
-              message: `It's ${timeOfDay} - time to take your ${med.name} (${med.dosage}). Don't forget to log it in DVDL-Health!`,
+              message: `It's ${timeOfDay} - time to take your ${med.name} (${med.dosage}). Don't forget to log it in DVDS-Health!`,
             });
           }
         }

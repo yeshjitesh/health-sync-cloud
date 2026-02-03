@@ -172,7 +172,7 @@ export default function Dashboard() {
 
   const quickActions = [
     {
-      title: "DVDL Bot",
+      title: "DVDS Bot",
       description: "Get health advice",
       icon: Bot,
       path: "/chat",

@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Footer } from "@/components/layout/Footer";
-import { Heart, Mail, MessageSquare, MapPin, Phone, Clock } from "lucide-react";
-import { Link } from "react-router-dom";
+import { PublicHeader } from "@/components/layout/PublicHeader";
+import { Mail, MessageSquare, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,17 +33,7 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen gradient-hero">
-      {/* Header */}
-      <header className="border-b border-white/10">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-xl gradient-primary">
-              <Heart className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-white tracking-tight">DVDL-Health</span>
-          </Link>
-        </div>
-      </header>
+      <PublicHeader />
 
       <div className="max-w-6xl mx-auto px-4 py-12">
         <motion.div
@@ -141,7 +131,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Email Support</h3>
-                    <p className="text-white/70 mt-1">support@dvdl-health.com</p>
+                    <p className="text-white/70 mt-1">support@dvds-health.com</p>
                     <p className="text-white/50 text-sm mt-1">For general inquiries and support</p>
                   </div>
                 </div>

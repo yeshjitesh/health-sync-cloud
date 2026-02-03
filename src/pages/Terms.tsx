@@ -1,23 +1,13 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Footer } from "@/components/layout/Footer";
-import { Heart, FileText, AlertTriangle, Scale, Ban, RefreshCw } from "lucide-react";
-import { Link } from "react-router-dom";
+import { PublicHeader } from "@/components/layout/PublicHeader";
+import { FileText, AlertTriangle, Scale, Ban, RefreshCw } from "lucide-react";
 
 export default function Terms() {
   return (
     <div className="min-h-screen gradient-hero">
-      {/* Header */}
-      <header className="border-b border-white/10">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-xl gradient-primary">
-              <Heart className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-white tracking-tight">DVDL-Health</span>
-          </Link>
-        </div>
-      </header>
+      <PublicHeader />
 
       <div className="max-w-4xl mx-auto px-4 py-12">
         <motion.div
@@ -46,11 +36,11 @@ export default function Terms() {
             </CardHeader>
             <CardContent className="space-y-4 text-white/80">
               <p>
-                By accessing and using DVDL-Health, you agree to be bound by these Terms of Service.
+                By accessing and using DVDS-Health, you agree to be bound by these Terms of Service.
                 If you do not agree to these terms, please do not use our services.
               </p>
               <p>
-                DVDL-Health is a platform designed for the Diu Vanja Darji Samaj community to track
+                DVDS-Health is a platform designed for the Diu Vanja Darji Samaj community to track
                 health metrics, receive AI-powered health insights, and manage medications.
               </p>
             </CardContent>
@@ -65,7 +55,7 @@ export default function Terms() {
             </CardHeader>
             <CardContent className="space-y-4 text-white/80">
               <p className="font-semibold">
-                DVDL-Health is NOT a substitute for professional medical advice, diagnosis, or treatment.
+                DVDS-Health is NOT a substitute for professional medical advice, diagnosis, or treatment.
               </p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>The AI health assistant provides general health information only</li>
@@ -117,7 +107,7 @@ export default function Terms() {
           <Card className="bg-white/10 backdrop-blur-sm border-white/10 text-white mb-6">
             <CardContent className="pt-6 text-white/80">
               <p>
-                For questions about these terms, contact us at legal@dvdl-health.com
+                For questions about these terms, contact us at legal@dvds-health.com
               </p>
             </CardContent>
           </Card>

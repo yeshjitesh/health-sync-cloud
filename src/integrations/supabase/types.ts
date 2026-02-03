@@ -323,6 +323,7 @@ export type Database = {
           gender: string | null
           height_cm: number | null
           id: string
+          language: string | null
           location_consent: boolean | null
           location_lat: number | null
           location_lng: number | null
@@ -341,6 +342,7 @@ export type Database = {
           gender?: string | null
           height_cm?: number | null
           id?: string
+          language?: string | null
           location_consent?: boolean | null
           location_lat?: number | null
           location_lng?: number | null
@@ -359,6 +361,7 @@ export type Database = {
           gender?: string | null
           height_cm?: number | null
           id?: string
+          language?: string | null
           location_consent?: boolean | null
           location_lat?: number | null
           location_lng?: number | null

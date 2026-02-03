@@ -62,7 +62,7 @@ const healthFocus = [{
 const testimonials = [{
   name: "Rajesh Darji",
   location: "Mumbai, India",
-  quote: "DVDS-Care helped me track my blood sugar levels and the AI assistant gave me practical diet tips aligned with our community's food habits.",
+  quote: "DVDS-Health helped me track my blood sugar levels and the AI assistant gave me practical diet tips aligned with our community's food habits.",
   avatar: "RD"
 }, {
   name: "Priya Vanja",
@@ -75,6 +75,8 @@ const testimonials = [{
   quote: "Being able to track my family's health records in one place has made managing everyone's wellness so much easier.",
   avatar: "AS"
 }];
+
+const LOGO_URL = "https://inxqwecffjulxsvkfwro.supabase.co/storage/v1/object/public/logo//1769952242296.png";
 
 // Animated counter component
 function AnimatedCounter({
@@ -222,7 +224,7 @@ export default function Landing() {
               scale: 1.05,
               rotate: 5
             }} className="w-10 h-10 md:w-12 md:h-12 rounded-xl overflow-hidden shadow-lg">
-                <img alt="DVDS-Care" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/pw/AP1GczNvSevVNr581y9WAc8wDfLQM4HvCxDWrnQLZ39z9n2I-GLkbaedNW78tWgPhPBEulvcG8GuNmn4HWAGh0iOpxUflgql67ItZ2D14YPXT6LJZXtFtLlV4Ed33BFESDhz0B2Pm0Lss5-riJpuL_3PB18Ldg=w500-h500-s-no?authuser=0" />
+                <img alt="DVDS-Health" className="w-full h-full object-cover" src={LOGO_URL} />
               </motion.div>
               <span className="text-xl md:text-2xl font-bold text-white tracking-tight">DVDS-Health</span>
             </div>
@@ -411,7 +413,7 @@ export default function Landing() {
           once: true
         }} className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              Why Choose DVDS-Care?
+              Why Choose DVDS-Health?
             </h2>
             <p className="text-white/60 max-w-2xl mx-auto">
               Built specifically for our community with features that matter most.
@@ -519,7 +521,7 @@ export default function Landing() {
               Trusted by Our Community
             </h2>
             <p className="text-white/60">
-              See what community members are saying about DVDS-Care
+              See what community members are saying about DVDS-Health
             </p>
           </motion.div>
 
@@ -584,7 +586,7 @@ export default function Landing() {
                 Start Your Health Journey Today
               </h2>
               <p className="text-white/80 mb-8 max-w-xl mx-auto">
-                Join hundreds of community members already using DVDS-Care to take control of their wellness.
+                Join hundreds of community members already using DVDS-Health to take control of their wellness.
               </p>
               <motion.div whileHover={{
               scale: 1.05
