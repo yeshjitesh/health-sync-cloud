@@ -1,23 +1,17 @@
-import { useEffect, useRef, useState, memo } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
-  Activity,
-  ArrowRight,
-  BarChart3,
-  Bot,
-  Clock,
-  FileText,
   Heart,
-  HeartPulse,
-  Pill,
-  Shield,
-  Sparkles,
-  Star,
-  Stethoscope,
-  TrendingUp,
   Users,
-  Zap,
+  Bot,
+  Shield,
+  FileText,
+  Pill,
+  Stethoscope,
+  Sparkles,
+  ArrowRight,
+  Star,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -32,103 +26,74 @@ const LOGO_URL =
   "https://inxqwecffjulxsvkfwro.supabase.co/storage/v1/object/public/logo//1769952242296.png";
 
 /* -------------------------------------------------------------------------- */
-/*                                    DATA                                    */
+/*                                   DATA                                     */
 /* -------------------------------------------------------------------------- */
 
 const FEATURES = [
   {
     icon: Bot,
-    title: "DVDS Bot",
-    description: "Instant AI-powered answers to health questions",
-    gradient: "from-primary to-purple-500",
+    title: "DVDS AI Health Mitra",
+    desc: "Community-aware AI guidance aligned with Indian lifestyle & food habits",
+    gradient: "from-orange-500 to-rose-600",
   },
   {
     icon: Stethoscope,
-    title: "Disease Predictor",
-    description:
-      "Risk assessment for diabetes, heart, kidney & liver diseases",
-    gradient: "from-accent to-orange-500",
+    title: "Disease Risk Checker",
+    desc: "Early screening for diabetes, BP, heart, kidney & liver conditions",
+    gradient: "from-emerald-500 to-teal-600",
   },
   {
     icon: FileText,
-    title: "Health Records",
-    description: "Smart tracking of vitals, labs & reports",
-    gradient: "from-green-500 to-emerald-500",
+    title: "Family Health Records",
+    desc: "Store reports, lab values & vitals for your entire parivaar",
+    gradient: "from-indigo-500 to-purple-600",
   },
   {
     icon: Pill,
-    title: "Medication Tracker",
-    description: "Dose reminders with adherence tracking",
-    gradient: "from-blue-500 to-cyan-500",
+    title: "Medicine & Care Reminders",
+    desc: "Never miss medicines for elders, parents or yourself",
+    gradient: "from-pink-500 to-fuchsia-600",
   },
 ];
 
 const STATS = [
-  { label: "Community Members", value: "500+", icon: Users },
-  { label: "Health Records", value: "10K+", icon: BarChart3 },
-  { label: "AI Support", value: "24/7", icon: Bot },
-  { label: "Data Privacy", value: "100%", icon: Shield },
-];
-
-const HEALTH_FOCUS = [
-  {
-    title: "Diabetes Prevention",
-    icon: "🩸",
-    description:
-      "Early risk detection with community-aware diet & lifestyle guidance",
-    image:
-      "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=400&h=300&fit=crop",
-  },
-  {
-    title: "Heart Health",
-    icon: "❤️",
-    description:
-      "Cardiovascular monitoring aligned with NHS, CDC & ICMR",
-    image:
-      "https://images.unsplash.com/photo-1628348070889-cb656235b4eb?w=400&h=300&fit=crop",
-  },
-  {
-    title: "Kidney & Liver Care",
-    icon: "🫘",
-    description:
-      "Biomarker tracking with AI-driven organ health insights",
-    image:
-      "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=400&h=300&fit=crop",
-  },
+  { label: "Community Members", value: "500+" },
+  { label: "Families Onboarded", value: "200+" },
+  { label: "AI Support", value: "24/7" },
+  { label: "Privacy & Trust", value: "100%" },
 ];
 
 const TESTIMONIALS = [
   {
     name: "Rajesh Darji",
-    location: "Mumbai, India",
-    avatar: "RD",
+    place: "Mumbai",
     quote:
-      "The AI guidance matched our food habits perfectly. Tracking sugar levels is effortless now.",
+      "DVDS-Health understands our food, our habits, and our lifestyle. It feels made for us.",
+    avatar: "RD",
   },
   {
     name: "Priya Vanja",
-    location: "Leicester, UK",
-    avatar: "PV",
+    place: "Leicester, UK",
     quote:
-      "Medication reminders changed everything. NHS-aligned advice is a big plus.",
+      "I manage my parents’ medicines from abroad. This app gives me peace of mind.",
+    avatar: "PV",
   },
   {
     name: "Amit Samji",
-    location: "New Jersey, USA",
-    avatar: "AS",
+    place: "New Jersey, USA",
     quote:
-      "Managing my entire family's health records in one place is priceless.",
+      "All family reports in one place. Simple, respectful, and very useful.",
+    avatar: "AS",
   },
 ];
 
 /* -------------------------------------------------------------------------- */
-/*                               UI COMPONENTS                                */
+/*                              HELPER COMPONENTS                             */
 /* -------------------------------------------------------------------------- */
 
-const AnimatedCounter = memo(({ value }: { value: string }) => {
+function AnimatedCounter({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [count, setCount] = useState(0);
-
   const target = Number(value.replace(/\D/g, "")) || 0;
 
   useEffect(() => {
@@ -136,7 +101,7 @@ const AnimatedCounter = memo(({ value }: { value: string }) => {
 
     const observer = new IntersectionObserver(
       ([entry]) => entry.isIntersecting && start(),
-      { threshold: 0.2 }
+      { threshold: 0.3 }
     );
 
     observer.observe(ref.current);
@@ -144,14 +109,16 @@ const AnimatedCounter = memo(({ value }: { value: string }) => {
 
     function start() {
       let current = 0;
-      const step = Math.max(1, Math.floor(target / 60));
+      const step = Math.max(1, Math.floor(target / 50));
       const timer = setInterval(() => {
         current += step;
         if (current >= target) {
           setCount(target);
           clearInterval(timer);
-        } else setCount(current);
-      }, 30);
+        } else {
+          setCount(current);
+        }
+      }, 35);
     }
   }, [target]);
 
@@ -161,95 +128,100 @@ const AnimatedCounter = memo(({ value }: { value: string }) => {
       {value.replace(/\d/g, "")}
     </span>
   );
-});
+}
 
 /* -------------------------------------------------------------------------- */
-/*                                  PAGE                                      */
+/*                                   PAGE                                     */
 /* -------------------------------------------------------------------------- */
 
 export default function Landing() {
   const { signInWithGoogle, isAuthenticated, loading } = useAuthContext();
   const navigate = useNavigate();
-
   const heroRef = useRef<HTMLDivElement>(null);
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
 
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
 
   useEffect(() => {
     if (isAuthenticated && !loading) navigate("/dashboard");
   }, [isAuthenticated, loading, navigate]);
 
   return (
-    <div className="min-h-screen gradient-hero">
+    <div className="min-h-screen bg-gradient-to-b from-[#2b0f0f] via-[#3a1414] to-black text-white">
       {/* HERO */}
       <motion.section
         ref={heroRef}
         style={{ opacity, scale }}
         className="relative overflow-hidden"
       >
-        <div className="max-w-6xl mx-auto px-4 py-14 text-center">
+        {/* Soft Diya Glow */}
+        <div className="absolute inset-0">
+          <motion.div
+            animate={{ opacity: [0.2, 0.35, 0.2] }}
+            transition={{ duration: 6, repeat: Infinity }}
+            className="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-orange-500/20 blur-[120px] rounded-full"
+          />
+        </div>
+
+        <div className="relative max-w-6xl mx-auto px-4 py-16 text-center">
           {/* HEADER */}
-          <header className="flex items-center justify-between mb-16">
+          <header className="flex justify-between items-center mb-14">
             <div className="flex items-center gap-3">
               <img
                 src={LOGO_URL}
-                alt="DVDS Health"
                 className="w-12 h-12 rounded-xl shadow-lg"
+                alt="DVDS Health"
               />
-              <span className="text-2xl font-bold text-white">
+              <span className="text-2xl font-bold tracking-wide">
                 DVDS-Health
               </span>
             </div>
-            <Button onClick={signInWithGoogle} className="gradient-primary">
-              <Sparkles className="w-4 h-4 mr-2" />
+            <Button onClick={signInWithGoogle} className="bg-white text-black">
               Sign In
             </Button>
           </header>
 
           {/* HERO TEXT */}
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            AI-Powered
-            <span className="block text-gradient">Community Health</span>
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+            Community First.
+            <br />
+            <span className="text-orange-400">Health Always.</span>
           </h1>
 
-          <p className="text-white/70 max-w-2xl mx-auto mb-10">
-            A culturally-aware healthcare platform built for the
-            Diu Vanja Darji Samaj community.
+          <p className="text-white/80 max-w-2xl mx-auto mb-10 text-lg">
+            A digital health companion built specially for the
+            <span className="text-orange-300 font-medium">
+              {" "}
+              Diu Vanja Darji Samaj
+            </span>
+            , focusing on family care, prevention, and togetherness.
           </p>
 
-          <div className="flex justify-center gap-4">
-            <Button
-              size="lg"
-              onClick={signInWithGoogle}
-              className="gradient-accent"
-            >
-              Get Started
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            <Link to="/about">
-              <Button size="lg" variant="outline">
-                Learn More
-              </Button>
-            </Link>
-          </div>
+          <Button
+            size="lg"
+            onClick={signInWithGoogle}
+            className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-6 text-lg"
+          >
+            Join the Community
+            <ArrowRight className="ml-2 w-5 h-5" />
+          </Button>
 
           {/* STATS */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
-            {STATS.map(({ icon: Icon, label, value }) => (
+            {STATS.map((s) => (
               <div
-                key={label}
-                className="p-6 bg-white/10 rounded-2xl backdrop-blur-sm"
+                key={s.label}
+                className="p-6 rounded-2xl bg-white/10 backdrop-blur"
               >
-                <Icon className="mx-auto text-primary mb-2" />
-                <p className="text-3xl font-bold text-white">
-                  <AnimatedCounter value={value} />
+                <p className="text-3xl font-bold">
+                  <AnimatedCounter value={s.value} />
                 </p>
-                <p className="text-white/60 text-sm">{label}</p>
+                <p className="text-white/60 text-sm mt-1">{s.label}</p>
               </div>
             ))}
           </div>
@@ -259,26 +231,25 @@ export default function Landing() {
       {/* FEATURES */}
       <section className="py-20">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white text-center mb-10">
-            Core Features
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Built for Our Samaj
           </h2>
 
           <div className="grid md:grid-cols-4 gap-6">
-            {FEATURES.map(({ icon: Icon, title, description, gradient }) => (
-              <div
-                key={title}
-                className="p-6 bg-white/10 rounded-2xl hover:scale-105 transition"
+            {FEATURES.map((f) => (
+              <motion.div
+                key={f.title}
+                whileHover={{ y: -6 }}
+                className="p-6 rounded-2xl bg-white/10"
               >
                 <div
-                  className={`w-14 h-14 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4`}
+                  className={`w-14 h-14 rounded-xl bg-gradient-to-br ${f.gradient} flex items-center justify-center mb-4`}
                 >
-                  <Icon className="text-white" />
+                  <f.icon />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  {title}
-                </h3>
-                <p className="text-white/60 text-sm">{description}</p>
-              </div>
+                <h3 className="font-semibold text-lg mb-2">{f.title}</h3>
+                <p className="text-white/70 text-sm">{f.desc}</p>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -287,21 +258,18 @@ export default function Landing() {
       {/* TESTIMONIALS */}
       <section className="py-20">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">
-            Community Voices
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Voices From Our Community
           </h2>
 
           <div className="grid md:grid-cols-3 gap-6">
             {TESTIMONIALS.map((t) => (
-              <div
-                key={t.name}
-                className="p-6 bg-white/10 rounded-2xl"
-              >
+              <div key={t.name} className="p-6 rounded-2xl bg-white/10">
                 <div className="flex gap-1 mb-4">
-                  {Array.from({ length: 5 }).map((_, i) => (
+                  {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className="w-4 h-4 text-primary fill-primary"
+                      className="w-4 h-4 text-orange-400 fill-orange-400"
                     />
                   ))}
                 </div>
@@ -309,14 +277,12 @@ export default function Landing() {
                   “{t.quote}”
                 </p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-white">
+                  <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center font-semibold">
                     {t.avatar}
                   </div>
                   <div>
-                    <p className="text-white text-sm">{t.name}</p>
-                    <p className="text-white/50 text-xs">
-                      {t.location}
-                    </p>
+                    <p className="text-sm">{t.name}</p>
+                    <p className="text-xs text-white/50">{t.place}</p>
                   </div>
                 </div>
               </div>
