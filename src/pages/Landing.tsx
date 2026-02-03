@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useEffect, useRef, useState } from "react";
 import { Footer } from "@/components/layout/Footer";
-import { Heart, Activity, FileText, Sparkles, Pill, Bot, Users, BarChart3, Shield, Stethoscope, ArrowRight, Star, HeartPulse, Zap, Clock, TrendingUp, MapPin } from "lucide-react";
+import { Heart, Activity, FileText, Sparkles, Pill, Bot, Users, BarChart3, Shield, Stethoscope, ArrowRight, Star, HeartPulse, Zap, Clock, TrendingUp, MapPin, Sliders } from "lucide-react";
 const features = [{
   icon: Bot,
   title: "DVDS Bot",
@@ -20,6 +20,11 @@ const features = [{
   title: "Community Health Risk Radar",
   description: "Realtime, geo-aware alerts from anonymised vitals and public data trends",
   color: "from-fuchsia-500 to-pink-500"
+}, {
+  icon: Sliders,
+  title: "Smart Vitals Engine",
+  description: "Schema-driven vitals that adapt inputs, units, and validation instantly",
+  color: "from-amber-500 to-orange-500"
 }, {
   icon: FileText,
   title: "Health Records",
@@ -468,6 +473,73 @@ export default function Landing() {
                 ))}
               </div>
             </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-20 bg-gradient-to-b from-black/10 to-black/20">
+        <div className="max-w-6xl mx-auto px-4">
+          <motion.div initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} className="grid lg:grid-cols-[0.95fr_1.05fr] gap-8 items-center">
+            <motion.div whileHover={{
+            y: -6
+          }} className="p-6 md:p-8 rounded-3xl bg-white/10 border border-white/15 backdrop-blur-sm shadow-xl order-2 lg:order-1">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                  <Sliders className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-xs uppercase tracking-[0.2em] text-white/50">Schema-driven</span>
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-3">Smart Vitals Engine</h3>
+              <p className="text-white/70 text-sm mb-5">
+                Vitals dynamically change inputs, units, ranges, and validation for cleaner entries.
+              </p>
+              <div className="space-y-3">
+                {["Locks units automatically", "Only shows relevant fields", "Flags abnormal values live"].map((item) => (
+                  <div key={item} className="flex items-center gap-3 text-white/70 text-sm">
+                    <span className="w-2 h-2 rounded-full bg-primary" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+            <div className="order-1 lg:order-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-white/80 text-sm mb-4">
+                <Sliders className="w-4 h-4 text-primary" />
+                Smart Vitals Engine
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                Schema-Driven Health Records
+              </h2>
+              <p className="text-white/70 text-base md:text-lg mb-6">
+                Selecting a vital instantly adapts the form so every reading stays accurate, consistent, and clinically clean.
+              </p>
+              <div className="space-y-4 text-white/70 text-sm md:text-base">
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                  <p className="font-semibold text-white mb-1">What makes it unique</p>
+                  <p>Vitals dynamically change inputs, units, ranges, and validation in realtime.</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                  <p className="font-semibold text-white mb-1">Example</p>
+                  <ul className="list-disc list-inside space-y-1">
+                    <li>Locks unit to mmHg</li>
+                    <li>Shows only systolic &amp; diastolic</li>
+                    <li>Flags abnormal values live</li>
+                  </ul>
+                </div>
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                  <p className="font-semibold text-white mb-1">Why it matters</p>
+                  <p>Eliminates user error and keeps health data clinically clean.</p>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
