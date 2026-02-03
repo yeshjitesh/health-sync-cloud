@@ -1,15 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
-  Heart,
-  Users,
   Bot,
-  Shield,
   FileText,
   Pill,
   Stethoscope,
-  Sparkles,
   ArrowRight,
   Star,
 } from "lucide-react";
@@ -57,10 +53,10 @@ const FEATURES = [
 ];
 
 const STATS = [
-  { label: "Community Members", value: "500+" },
-  { label: "Families Onboarded", value: "200+" },
-  { label: "AI Support", value: "24/7" },
-  { label: "Privacy & Trust", value: "100%" },
+  { value: "500+", label: "Community Members" },
+  { value: "200+", label: "Families Onboarded" },
+  { value: "24/7", label: "AI Support" },
+  { value: "100%", label: "Privacy & Trust" },
 ];
 
 const TESTIMONIALS = [
@@ -159,7 +155,7 @@ export default function Landing() {
         style={{ opacity, scale }}
         className="relative overflow-hidden"
       >
-        {/* Soft Diya Glow */}
+        {/* Diya Glow */}
         <div className="absolute inset-0">
           <motion.div
             animate={{ opacity: [0.2, 0.35, 0.2] }}
@@ -214,15 +210,16 @@ export default function Landing() {
           {/* STATS */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
             {STATS.map((s) => (
-              <div
+              <motion.div
                 key={s.label}
+                whileHover={{ y: -4 }}
                 className="p-6 rounded-2xl bg-white/10 backdrop-blur"
               >
                 <p className="text-3xl font-bold">
                   <AnimatedCounter value={s.value} />
                 </p>
                 <p className="text-white/60 text-sm mt-1">{s.label}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
