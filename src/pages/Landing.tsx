@@ -75,7 +75,6 @@ const testimonials = [{
   quote: "Being able to track my family's health records in one place has made managing everyone's wellness so much easier.",
   avatar: "AS"
 }];
-
 const LOGO_URL = "https://inxqwecffjulxsvkfwro.supabase.co/storage/v1/object/public/logo//1769952242296.png";
 
 // Animated counter component
