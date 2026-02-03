@@ -18,12 +18,12 @@ const features = [{
 }, {
   icon: MapPin,
   title: "Community Health Risk Radar",
-  description: "Realtime, geo-aware alerts from anonymised vitals and public data trends",
+  description: "Realtime + geo-aware alerts from anonymised vitals and public data",
   color: "from-fuchsia-500 to-pink-500"
 }, {
   icon: Sliders,
   title: "Smart Vitals Engine",
-  description: "Schema-driven vitals that adapt inputs, units, and validation instantly",
+  description: "Schema-driven vitals that adapt inputs, units, ranges, and validation",
   color: "from-amber-500 to-orange-500"
 }, {
   icon: FileText,
@@ -430,14 +430,12 @@ export default function Landing() {
                 Realtime + Geo-Aware
               </h2>
               <p className="text-white/70 text-base md:text-lg mb-6">
-                Aggregates anonymised vitals alongside trusted public datasets to detect emerging local health risks in realtime.
+                Aggregates anonymised vitals + public data to detect local health risks in realtime.
               </p>
               <div className="space-y-4 text-white/70 text-sm md:text-base">
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
                   <p className="font-semibold text-white mb-1">What makes it unique</p>
-                  <p>
-                    Community-level intelligence that blends anonymised biometrics with public health signals.
-                  </p>
+                  <p>Aggregates anonymised vitals + public data to detect local health risks in realtime.</p>
                 </div>
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
                   <p className="font-semibold text-white mb-1">Example</p>
@@ -445,9 +443,7 @@ export default function Landing() {
                 </div>
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
                   <p className="font-semibold text-white mb-1">Why it matters</p>
-                  <p>
-                    Preventive, population-level health insight that is rare in consumer health apps.
-                  </p>
+                  <p>Preventive, population-level health insight (rare in consumer apps).</p>
                 </div>
               </div>
             </div>
@@ -499,10 +495,10 @@ export default function Landing() {
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">Smart Vitals Engine</h3>
               <p className="text-white/70 text-sm mb-5">
-                Vitals dynamically change inputs, units, ranges, and validation for cleaner entries.
+                Vitals dynamically change inputs, units, ranges, and validation.
               </p>
               <div className="space-y-3">
-                {["Locks units automatically", "Only shows relevant fields", "Flags abnormal values live"].map((item) => (
+                {["Locks unit to mmHg", "Shows only systolic & diastolic", "Flags abnormal values live"].map((item) => (
                   <div key={item} className="flex items-center gap-3 text-white/70 text-sm">
                     <span className="w-2 h-2 rounded-full bg-primary" />
                     <span>{item}</span>
@@ -519,15 +515,16 @@ export default function Landing() {
                 Schema-Driven Health Records
               </h2>
               <p className="text-white/70 text-base md:text-lg mb-6">
-                Selecting a vital instantly adapts the form so every reading stays accurate, consistent, and clinically clean.
+                Selecting Blood Pressure instantly adapts the form so every reading stays accurate and consistent.
               </p>
               <div className="space-y-4 text-white/70 text-sm md:text-base">
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
                   <p className="font-semibold text-white mb-1">What makes it unique</p>
-                  <p>Vitals dynamically change inputs, units, ranges, and validation in realtime.</p>
+                  <p>Vitals dynamically change inputs, units, ranges, and validation.</p>
                 </div>
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
                   <p className="font-semibold text-white mb-1">Example</p>
+                  <p className="text-white/70 mb-2">Selecting Blood Pressure instantly:</p>
                   <ul className="list-disc list-inside space-y-1">
                     <li>Locks unit to mmHg</li>
                     <li>Shows only systolic &amp; diastolic</li>
@@ -536,7 +533,10 @@ export default function Landing() {
                 </div>
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
                   <p className="font-semibold text-white mb-1">Why it matters</p>
-                  <p>Eliminates user error and keeps health data clinically clean.</p>
+                  <ul className="list-disc list-inside space-y-1">
+                    <li>Eliminates user error</li>
+                    <li>Clinically clean data</li>
+                  </ul>
                 </div>
               </div>
             </div>
