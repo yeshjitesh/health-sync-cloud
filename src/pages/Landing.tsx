@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useEffect, useRef, useState } from "react";
 import { Footer } from "@/components/layout/Footer";
-import { Heart, Activity, FileText, Sparkles, Pill, Bot, Users, BarChart3, Shield, Stethoscope, ArrowRight, Star, HeartPulse, Zap, Clock, TrendingUp } from "lucide-react";
+import { Heart, Activity, FileText, Sparkles, Pill, Bot, Users, BarChart3, Shield, Stethoscope, ArrowRight, Star, HeartPulse, Zap, Clock, TrendingUp, MapPin } from "lucide-react";
 const features = [{
   icon: Bot,
   title: "DVDS Bot",
@@ -15,6 +15,11 @@ const features = [{
   title: "Disease Predictor",
   description: "Assess your risk for diabetes, heart disease, kidney and liver conditions",
   color: "from-accent to-orange-500"
+}, {
+  icon: MapPin,
+  title: "Community Health Risk Radar",
+  description: "Realtime, geo-aware alerts from anonymised vitals and public data trends",
+  color: "from-fuchsia-500 to-pink-500"
 }, {
   icon: FileText,
   title: "Health Records",
@@ -399,6 +404,73 @@ export default function Landing() {
           </motion.div>
         </div>
       </motion.div>
+
+      <section className="py-16 md:py-20 bg-gradient-to-b from-black/5 to-black/10">
+        <div className="max-w-6xl mx-auto px-4">
+          <motion.div initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-white/80 text-sm mb-4">
+                <MapPin className="w-4 h-4 text-primary" />
+                Community Health Risk Radar
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                Realtime + Geo-Aware
+              </h2>
+              <p className="text-white/70 text-base md:text-lg mb-6">
+                Aggregates anonymised vitals alongside trusted public datasets to detect emerging local health risks in realtime.
+              </p>
+              <div className="space-y-4 text-white/70 text-sm md:text-base">
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                  <p className="font-semibold text-white mb-1">What makes it unique</p>
+                  <p>
+                    Community-level intelligence that blends anonymised biometrics with public health signals.
+                  </p>
+                </div>
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                  <p className="font-semibold text-white mb-1">Example</p>
+                  <p>“Rising BP &amp; dehydration trends detected in your area this week.”</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                  <p className="font-semibold text-white mb-1">Why it matters</p>
+                  <p>
+                    Preventive, population-level health insight that is rare in consumer health apps.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <motion.div whileHover={{
+            y: -6
+          }} className="p-6 md:p-8 rounded-3xl bg-white/10 border border-white/15 backdrop-blur-sm shadow-xl">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-fuchsia-500 to-pink-500 flex items-center justify-center">
+                  <MapPin className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-xs uppercase tracking-[0.2em] text-white/50">Realtime signal</span>
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-3">Community Health Risk Radar</h3>
+              <p className="text-white/70 text-sm mb-5">
+                See localized alerts for heat stress, BP spikes, or dehydration risks based on anonymised trends.
+              </p>
+              <div className="space-y-3">
+                {["Geo-aware alerts", "Anonymised vitals aggregation", "Public health signal fusion"].map((item) => (
+                  <div key={item} className="flex items-center gap-3 text-white/70 text-sm">
+                    <span className="w-2 h-2 rounded-full bg-primary" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Why Choose Section */}
       <section className="py-16 md:py-20 bg-gradient-to-b from-transparent to-black/10">
