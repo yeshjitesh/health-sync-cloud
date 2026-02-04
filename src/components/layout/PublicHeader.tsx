@@ -1,23 +1,23 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface PublicHeaderProps {
   showSignIn?: boolean;
   onSignIn?: () => void;
 }
 
-const LOGO_URL = "https://inxqwecffjulxsvkfwro.supabase.co/storage/v1/object/public/logo//1769952242296.png";
+const LOGO_URL = "https://sospasvrceakoreeslmd.supabase.co/storage/v1/object/public/logo//logo";
 
 export function PublicHeader({ showSignIn = false, onSignIn }: PublicHeaderProps) {
   return (
-    <header className="border-b border-white/10">
-      <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3">
+    <header className="border-b border-white/10 backdrop-blur-md bg-white/5 sticky top-0 z-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2 sm:gap-3 group">
           <motion.div
-            whileHover={{ scale: 1.05, rotate: 5 }}
-            className="w-10 h-10 md:w-12 md:h-12 rounded-xl overflow-hidden shadow-lg"
+            whileHover={{ scale: 1.05 }}
+            className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl overflow-hidden shadow-lg ring-2 ring-primary/20"
           >
             <img
               alt="DVDS-Health"
@@ -25,16 +25,28 @@ export function PublicHeader({ showSignIn = false, onSignIn }: PublicHeaderProps
               src={LOGO_URL}
             />
           </motion.div>
-          <span className="text-xl font-bold text-white tracking-tight">DVDS-Health</span>
+          <span className="text-lg sm:text-xl font-bold text-white tracking-tight group-hover:text-primary transition-colors">
+            DVDS-Health
+          </span>
         </Link>
+        
+        <nav className="hidden md:flex items-center gap-6">
+          <Link to="/about" className="text-white/70 hover:text-white transition-colors text-sm font-medium">
+            About
+          </Link>
+          <Link to="/contact" className="text-white/70 hover:text-white transition-colors text-sm font-medium">
+            Contact
+          </Link>
+        </nav>
+        
         {showSignIn && onSignIn && (
           <Button
             onClick={onSignIn}
             size="sm"
-            className="gradient-primary border-0 text-white hover:opacity-90 text-sm md:text-base md:px-6 shadow-lg"
+            className="gradient-primary border-0 text-white hover:opacity-90 text-sm px-4 sm:px-6 shadow-lg font-medium"
           >
-            <Sparkles className="w-4 h-4 mr-2 hidden md:inline" />
-            Sign In
+            Get Started
+            <ArrowRight className="w-4 h-4 ml-1.5" />
           </Button>
         )}
       </div>

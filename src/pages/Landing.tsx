@@ -76,7 +76,7 @@ const testimonials = [{
   avatar: "AS"
 }];
 
-const LOGO_URL = "https://inxqwecffjulxsvkfwro.supabase.co/storage/v1/object/public/logo//1769952242296.png";
+const LOGO_URL = "https://sospasvrceakoreeslmd.supabase.co/storage/v1/object/public/logo//logo";
 
 // Animated counter component
 function AnimatedCounter({
@@ -95,6 +95,9 @@ function AnimatedCounter({
   
   // Extract numeric part for animation
   const numericTarget = isStatic ? 0 : (parseInt(target.replace(/[^0-9]/g, "")) || 0);
+  const hasPlus = target.includes("+");
+  const hasK = target.includes("K");
+  const hasPercent = target.includes("%");
   
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -135,9 +138,9 @@ function AnimatedCounter({
   
   return <span ref={ref}>
       {count}
-      {target.includes("+") ? "+" : ""}
-      {target.includes("K") ? "K+" : ""}
-      {target.includes("%") ? "%" : ""}
+      {hasK ? "K" : ""}
+      {hasPlus ? "+" : ""}
+      {hasPercent ? "%" : ""}
       {suffix}
     </span>;
 }
@@ -222,7 +225,7 @@ export default function Landing() {
         }} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500 rounded-full blur-3xl opacity-30" />
         </div>
 
-        <div className="relative max-w-6xl mx-auto px-4 py-8 md:py-16">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-12">
           {/* Header */}
           <motion.header initial={{
           opacity: 0,
@@ -230,19 +233,22 @@ export default function Landing() {
         }} animate={{
           opacity: 1,
           y: 0
-        }} className="flex items-center justify-between mb-12 md:mb-16">
-            <div className="flex items-center gap-2 md:gap-3">
+        }} className="flex items-center justify-between mb-10 md:mb-14">
+            <div className="flex items-center gap-2.5 md:gap-3">
               <motion.div whileHover={{
-              scale: 1.05,
-              rotate: 5
-            }} className="w-10 h-10 md:w-12 md:h-12 rounded-xl overflow-hidden shadow-lg">
+              scale: 1.05
+            }} className="w-10 h-10 md:w-12 md:h-12 rounded-xl overflow-hidden shadow-lg ring-2 ring-primary/20">
                 <img alt="DVDS-Health" className="w-full h-full object-cover" src={LOGO_URL} />
               </motion.div>
-              <span className="text-xl md:text-2xl font-bold text-white tracking-tight">DVDS-Health</span>
+              <span className="text-lg md:text-2xl font-bold text-white tracking-tight">DVDS-Health</span>
             </div>
-            <Button onClick={handleSignIn} size="sm" className="gradient-primary border-0 text-white hover:opacity-90 text-sm md:text-base md:px-6 shadow-lg">
-              <Sparkles className="w-4 h-4 mr-2 hidden md:inline" />
-              Sign In
+            <nav className="hidden md:flex items-center gap-6 mr-4">
+              <Link to="/about" className="text-white/70 hover:text-white transition-colors text-sm font-medium">About</Link>
+              <Link to="/contact" className="text-white/70 hover:text-white transition-colors text-sm font-medium">Contact</Link>
+            </nav>
+            <Button onClick={handleSignIn} size="sm" className="gradient-primary border-0 text-white hover:opacity-90 text-sm md:text-base px-4 md:px-6 shadow-lg btn-glow font-medium">
+              <ArrowRight className="w-4 h-4 mr-1.5" />
+              Get Started
             </Button>
           </motion.header>
 
@@ -278,28 +284,28 @@ export default function Landing() {
                 Health Companion
               </motion.span>
             </h1>
-            <p className="text-base md:text-xl text-white/70 max-w-2xl mx-auto mb-8 md:mb-10 px-4">
+            <p className="text-base md:text-lg text-white/70 max-w-2xl mx-auto mb-8 md:mb-10 px-4 leading-relaxed">
               Manage your health with intelligent disease prediction, symptom
               analysis, and comprehensive medical record tracking — designed with our community's wellness in mind.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
               <motion.div whileHover={{
-              scale: 1.05
+              scale: 1.03
             }} whileTap={{
               scale: 0.98
             }}>
-                <Button onClick={handleSignIn} size="lg" className="gradient-accent border-0 text-white hover:opacity-90 text-base md:text-lg px-6 md:px-8 py-5 md:py-6 shadow-xl shadow-accent/30">
+                <Button onClick={handleSignIn} size="lg" className="gradient-accent border-0 text-white hover:opacity-90 text-base md:text-lg px-6 md:px-8 py-5 md:py-6 shadow-xl shadow-accent/30 w-full sm:w-auto font-semibold btn-glow">
                   Get Started Free
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </motion.div>
-              <Link to="/about">
+              <Link to="/about" className="w-full sm:w-auto">
                 <motion.div whileHover={{
-                scale: 1.05
+                scale: 1.03
               }} whileTap={{
                 scale: 0.98
               }}>
-                  <Button variant="outline" size="lg" className="border-2 border-white/40 bg-white/10 text-white hover:bg-white/20 hover:border-white/60 text-base md:text-lg px-6 md:px-8 py-5 md:py-6 w-full sm:w-auto backdrop-blur-sm">
+                  <Button variant="outline" size="lg" className="border-2 border-white/30 bg-white/10 text-white hover:bg-white/20 hover:border-white/50 text-base md:text-lg px-6 md:px-8 py-5 md:py-6 w-full backdrop-blur-sm font-medium">
                     Learn More
                   </Button>
                 </motion.div>
@@ -340,7 +346,7 @@ export default function Landing() {
           y: 0
         }} transition={{
           delay: 0.3
-        }} className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+        }} className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-14 md:mb-16">
             {stats.map((stat, index) => {
             const Icon = stat.icon;
             return <motion.div key={stat.label} initial={{
@@ -352,14 +358,14 @@ export default function Landing() {
             }} transition={{
               delay: 0.4 + index * 0.1
             }} whileHover={{
-              scale: 1.05,
-              y: -5
-            }} className="text-center p-4 md:p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all cursor-default">
-                  <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary mx-auto mb-2" />
-                  <p className="text-2xl md:text-3xl font-bold text-white">
+              scale: 1.03,
+              y: -3
+            }} className="text-center p-4 md:p-6 rounded-2xl glass-card hover:bg-white/10 transition-all cursor-default">
+                  <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary mx-auto mb-2.5" />
+                  <p className="text-2xl md:text-3xl font-bold text-white mb-1">
                     <AnimatedCounter target={stat.value} />
                   </p>
-                  <p className="text-xs md:text-sm text-white/60">{stat.label}</p>
+                  <p className="text-xs md:text-sm text-white/60 font-medium">{stat.label}</p>
                 </motion.div>;
           })}
           </motion.div>
