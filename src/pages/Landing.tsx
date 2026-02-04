@@ -86,10 +86,16 @@ function AnimatedCounter({
   target: string;
   suffix?: string;
 }) {
-  const [count, setCount] = useState(0);
-  const numericTarget = parseInt(target.replace(/[^0-9]/g, "")) || 0;
   const ref = useRef<HTMLSpanElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [count, setCount] = useState(0);
+  
+  // Check if this is a static display value (like "24/7")
+  const isStatic = target.includes("/");
+  
+  // Extract numeric part for animation
+  const numericTarget = isStatic ? 0 : (parseInt(target.replace(/[^0-9]/g, "")) || 0);
+  
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
@@ -103,8 +109,9 @@ function AnimatedCounter({
     }
     return () => observer.disconnect();
   }, []);
+  
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible || isStatic) return;
     const duration = 2000;
     const steps = 60;
     const increment = numericTarget / steps;
@@ -119,12 +126,17 @@ function AnimatedCounter({
       }
     }, duration / steps);
     return () => clearInterval(timer);
-  }, [isVisible, numericTarget]);
+  }, [isVisible, numericTarget, isStatic]);
+  
+  // For static values like "24/7", just display as-is
+  if (isStatic) {
+    return <span ref={ref}>{target}</span>;
+  }
+  
   return <span ref={ref}>
       {count}
       {target.includes("+") ? "+" : ""}
-      {target.includes("K") ? "K" : ""}
-      {target.includes("/") ? "24/7" : ""}
+      {target.includes("K") ? "K+" : ""}
       {target.includes("%") ? "%" : ""}
       {suffix}
     </span>;
