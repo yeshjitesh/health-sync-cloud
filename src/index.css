@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* DVDL-Health Design System - Modern & Vibrant */
+/* DVDS-Health Design System - Professional Healthcare Theme */
 
 @layer base {
   :root {
@@ -16,19 +16,19 @@
     --popover-foreground: 222 47% 11%;
 
     /* Teal Primary - Health & Wellness */
-    --primary: 172 66% 50%;
+    --primary: 168 80% 42%;
     --primary-foreground: 0 0% 100%;
 
-    /* Purple Secondary - Innovation */
-    --secondary: 270 60% 95%;
-    --secondary-foreground: 270 50% 40%;
+    /* Deep Purple Secondary - Trust & Innovation */
+    --secondary: 250 60% 95%;
+    --secondary-foreground: 250 50% 40%;
 
     /* Muted - Soft backgrounds */
     --muted: 210 20% 96%;
     --muted-foreground: 215 16% 47%;
 
-    /* Accent - Coral for CTAs */
-    --accent: 16 90% 65%;
+    /* Coral Accent - Warmth & Energy */
+    --accent: 12 90% 62%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -36,37 +36,39 @@
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 172 66% 50%;
+    --ring: 168 80% 42%;
 
     --radius: 0.75rem;
 
-    /* Custom Health Colors */
-    --health-teal: 172 66% 50%;
-    --health-purple: 270 60% 60%;
-    --health-coral: 16 90% 65%;
-    --health-mint: 160 60% 85%;
-    --health-lavender: 270 60% 92%;
-    --health-peach: 16 80% 92%;
+    /* Health Color Palette */
+    --health-teal: 168 80% 42%;
+    --health-teal-light: 168 70% 90%;
+    --health-purple: 250 60% 55%;
+    --health-purple-light: 250 60% 92%;
+    --health-coral: 12 90% 62%;
+    --health-coral-light: 12 80% 92%;
+    --health-mint: 160 50% 88%;
+    --health-gold: 38 92% 55%;
 
     /* Risk Level Colors */
     --risk-low: 142 76% 36%;
     --risk-medium: 38 92% 50%;
     --risk-high: 0 84% 60%;
 
-    /* Sidebar */
-    --sidebar-background: 270 30% 12%;
+    /* Sidebar - Deep Purple */
+    --sidebar-background: 250 35% 12%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 172 66% 50%;
+    --sidebar-primary: 168 80% 42%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 270 30% 18%;
+    --sidebar-accent: 250 35% 18%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 270 20% 20%;
-    --sidebar-ring: 172 66% 50%;
+    --sidebar-border: 250 25% 20%;
+    --sidebar-ring: 168 80% 42%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(172, 66%, 50%), hsl(270, 60%, 60%));
-    --gradient-accent: linear-gradient(135deg, hsl(16, 90%, 65%), hsl(38, 92%, 60%));
-    --gradient-hero: linear-gradient(135deg, hsl(270, 30%, 12%), hsl(270, 40%, 20%));
+    --gradient-primary: linear-gradient(135deg, hsl(168, 80%, 42%), hsl(250, 60%, 55%));
+    --gradient-accent: linear-gradient(135deg, hsl(12, 90%, 62%), hsl(38, 92%, 55%));
+    --gradient-hero: linear-gradient(145deg, hsl(250, 35%, 10%), hsl(250, 45%, 18%), hsl(250, 35%, 14%));
   }
 
   .dark {
@@ -79,16 +81,16 @@
     --popover: 222 47% 8%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 172 66% 50%;
+    --primary: 168 80% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 270 30% 20%;
-    --secondary-foreground: 270 40% 80%;
+    --secondary: 250 30% 20%;
+    --secondary-foreground: 250 40% 80%;
 
     --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 16 90% 55%;
+    --accent: 12 90% 55%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 63% 31%;
@@ -96,16 +98,16 @@
 
     --border: 217 33% 17%;
     --input: 217 33% 17%;
-    --ring: 172 66% 50%;
+    --ring: 168 80% 45%;
 
-    --sidebar-background: 270 30% 8%;
+    --sidebar-background: 250 35% 8%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 172 66% 50%;
+    --sidebar-primary: 168 80% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 270 30% 14%;
+    --sidebar-accent: 250 35% 14%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 270 20% 15%;
-    --sidebar-ring: 172 66% 50%;
+    --sidebar-border: 250 25% 15%;
+    --sidebar-ring: 168 80% 45%;
   }
 }
 
@@ -116,37 +118,65 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight font-semibold;
   }
 }
 
 @layer utilities {
   .gradient-primary {
-    background: linear-gradient(135deg, hsl(172, 66%, 50%), hsl(270, 60%, 60%));
+    background: linear-gradient(135deg, hsl(168, 80%, 42%), hsl(250, 60%, 55%));
   }
 
   .gradient-accent {
-    background: linear-gradient(135deg, hsl(16, 90%, 65%), hsl(38, 92%, 60%));
+    background: linear-gradient(135deg, hsl(12, 90%, 62%), hsl(38, 92%, 55%));
   }
 
   .gradient-hero {
-    background: linear-gradient(135deg, hsl(270, 30%, 12%), hsl(270, 40%, 20%));
+    background: linear-gradient(145deg, hsl(250, 35%, 10%), hsl(250, 45%, 18%), hsl(250, 35%, 14%));
+  }
+
+  .gradient-card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
   }
 
   .text-gradient {
-    background: linear-gradient(135deg, hsl(172, 66%, 50%), hsl(270, 60%, 60%));
+    background: linear-gradient(135deg, hsl(168, 80%, 50%), hsl(250, 60%, 65%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .glass {
-    backdrop-filter: blur(12px);
-    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.85);
   }
 
   .dark .glass {
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.65);
   }
+
+  .glass-card {
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .btn-glow {
+    box-shadow: 0 0 20px rgba(20, 184, 166, 0.4);
+  }
+
+  .btn-glow:hover {
+    box-shadow: 0 0 30px rgba(20, 184, 166, 0.6);
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
 
 /* Custom scrollbar */
@@ -167,4 +197,16 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Focus visible styles */
+*:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background: hsl(var(--primary) / 0.3);
+  color: hsl(var(--foreground));
 }

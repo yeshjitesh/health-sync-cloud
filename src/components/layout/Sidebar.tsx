@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const LOGO_URL = "https://inxqwecffjulxsvkfwro.supabase.co/storage/v1/object/public/logo//1769952242296.png";
+const LOGO_URL = "https://sospasvrceakoreeslmd.supabase.co/storage/v1/object/public/logo//logo";
 
 interface SidebarProps {
   onNavigate?: () => void;
