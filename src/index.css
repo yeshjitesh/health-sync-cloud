@@ -2,112 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
-/* DVDS-Health Design System - Professional Healthcare Theme */
-
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 222 47% 11%;
-
+    /* Royal Maroon/Gold/Cream Theme - DVDS Community */
+    --background: 0 0% 98%;
+    --foreground: 348 45% 15%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-
+    --card-foreground: 348 45% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-
-    /* Teal Primary - Health & Wellness */
-    --primary: 168 80% 42%;
-    --primary-foreground: 0 0% 100%;
-
-    /* Deep Purple Secondary - Trust & Innovation */
-    --secondary: 250 60% 95%;
-    --secondary-foreground: 250 50% 40%;
-
-    /* Muted - Soft backgrounds */
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 16% 47%;
-
-    /* Coral Accent - Warmth & Energy */
-    --accent: 12 90% 62%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 168 80% 42%;
-
+    --popover-foreground: 348 45% 15%;
+    --primary: 43 74% 49%; /* Metallic Gold */
+    --primary-foreground: 348 65% 18%;
+    --secondary: 40 30% 90%; /* Cream */
+    --secondary-foreground: 348 45% 20%;
+    --muted: 40 20% 92%;
+    --muted-foreground: 348 20% 40%;
+    --accent: 348 65% 30%; /* Deep Maroon accent */
+    --accent-foreground: 40 60% 90%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 40 30% 85%;
+    --input: 40 30% 85%;
+    --ring: 43 74% 49%;
     --radius: 0.75rem;
 
-    /* Health Color Palette */
-    --health-teal: 168 80% 42%;
-    --health-teal-light: 168 70% 90%;
-    --health-purple: 250 60% 55%;
-    --health-purple-light: 250 60% 92%;
-    --health-coral: 12 90% 62%;
-    --health-coral-light: 12 80% 92%;
-    --health-mint: 160 50% 88%;
-    --health-gold: 38 92% 55%;
-
-    /* Risk Level Colors */
-    --risk-low: 142 76% 36%;
-    --risk-medium: 38 92% 50%;
-    --risk-high: 0 84% 60%;
-
-    /* Sidebar - Deep Purple */
-    --sidebar-background: 250 35% 12%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 168 80% 42%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 250 35% 18%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 250 25% 20%;
-    --sidebar-ring: 168 80% 42%;
-
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(168, 80%, 42%), hsl(250, 60%, 55%));
-    --gradient-accent: linear-gradient(135deg, hsl(12, 90%, 62%), hsl(38, 92%, 55%));
-    --gradient-hero: linear-gradient(145deg, hsl(250, 35%, 10%), hsl(250, 45%, 18%), hsl(250, 35%, 14%));
+    /* Sidebar - Maroon theme */
+    --sidebar-background: 348 55% 16%;
+    --sidebar-foreground: 40 40% 95%;
+    --sidebar-primary: 43 74% 55%;
+    --sidebar-primary-foreground: 348 65% 15%;
+    --sidebar-accent: 348 45% 22%;
+    --sidebar-accent-foreground: 40 40% 95%;
+    --sidebar-border: 348 40% 25%;
+    --sidebar-ring: 43 74% 49%;
   }
 
   .dark {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 98%;
+    /* Dark mode with Maroon/Gold aesthetic */
+    --background: 348 55% 8%;
+    --foreground: 40 40% 95%;
+    --card: 348 50% 12%;
+    --card-foreground: 40 40% 95%;
+    --popover: 348 50% 12%;
+    --popover-foreground: 40 40% 95%;
+    --primary: 43 74% 55%; /* Metallic Gold */
+    --primary-foreground: 348 65% 12%;
+    --secondary: 348 45% 18%;
+    --secondary-foreground: 40 40% 90%;
+    --muted: 348 40% 15%;
+    --muted-foreground: 40 20% 65%;
+    --accent: 43 74% 55%; /* Gold accent in dark mode */
+    --accent-foreground: 348 65% 12%;
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 348 40% 20%;
+    --input: 348 40% 20%;
+    --ring: 43 74% 55%;
 
-    --card: 222 47% 8%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222 47% 8%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 168 80% 45%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 250 30% 20%;
-    --secondary-foreground: 250 40% 80%;
-
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-
-    --accent: 12 90% 55%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 168 80% 45%;
-
-    --sidebar-background: 250 35% 8%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 168 80% 45%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 250 35% 14%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 250 25% 15%;
-    --sidebar-ring: 168 80% 45%;
+    /* Sidebar - Dark Maroon */
+    --sidebar-background: 348 55% 10%;
+    --sidebar-foreground: 40 40% 95%;
+    --sidebar-primary: 43 74% 55%;
+    --sidebar-primary-foreground: 348 65% 10%;
+    --sidebar-accent: 348 45% 16%;
+    --sidebar-accent-foreground: 40 40% 95%;
+    --sidebar-border: 348 40% 18%;
+    --sidebar-ring: 43 74% 55%;
   }
 }
 
@@ -115,98 +75,219 @@
   * {
     @apply border-border;
   }
-
   body {
-    @apply bg-background text-foreground antialiased;
-    font-feature-settings: "cv11", "ss01";
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply tracking-tight font-semibold;
+    @apply bg-background text-foreground;
   }
 }
 
-@layer utilities {
-  .gradient-primary {
-    background: linear-gradient(135deg, hsl(168, 80%, 42%), hsl(250, 60%, 55%));
-  }
-
-  .gradient-accent {
-    background: linear-gradient(135deg, hsl(12, 90%, 62%), hsl(38, 92%, 55%));
-  }
-
+@layer components {
+  /* Royal Maroon Hero Gradient */
   .gradient-hero {
-    background: linear-gradient(145deg, hsl(250, 35%, 10%), hsl(250, 45%, 18%), hsl(250, 35%, 14%));
+    background: linear-gradient(
+      135deg,
+      hsl(348, 60%, 12%) 0%,
+      hsl(348, 55%, 18%) 35%,
+      hsl(348, 50%, 22%) 65%,
+      hsl(348, 45%, 16%) 100%
+    );
   }
 
-  .gradient-card {
-    background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  /* Deep Maroon/Burgundy Background */
+  .gradient-maroon {
+    background: linear-gradient(
+      180deg,
+      hsl(348, 55%, 14%) 0%,
+      hsl(348, 60%, 10%) 100%
+    );
   }
 
-  .text-gradient {
-    background: linear-gradient(135deg, hsl(168, 80%, 50%), hsl(250, 60%, 65%));
+  /* Metallic Gold Gradient for CTAs */
+  .gradient-gold {
+    background: linear-gradient(
+      135deg,
+      hsl(43, 74%, 55%) 0%,
+      hsl(38, 70%, 48%) 50%,
+      hsl(43, 74%, 52%) 100%
+    );
+  }
+
+  /* Legacy gradient-primary mapped to gold */
+  .gradient-primary {
+    background: linear-gradient(
+      135deg,
+      hsl(43, 74%, 55%) 0%,
+      hsl(38, 70%, 48%) 50%,
+      hsl(43, 74%, 52%) 100%
+    );
+  }
+
+  /* Cream/Gold subtle gradient */
+  .gradient-cream {
+    background: linear-gradient(
+      135deg,
+      hsl(40, 40%, 96%) 0%,
+      hsl(40, 30%, 92%) 100%
+    );
+  }
+
+  /* Glass Card with Gold Border */
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-xl border border-primary/20 rounded-2xl;
+  }
+
+  /* Maroon Glass Card */
+  .glass-card-maroon {
+    @apply backdrop-blur-xl rounded-2xl;
+    background: linear-gradient(
+      135deg,
+      hsla(348, 50%, 20%, 0.6) 0%,
+      hsla(348, 55%, 15%, 0.4) 100%
+    );
+    border: 1px solid hsla(43, 74%, 55%, 0.25);
+  }
+
+  /* Gold text gradient */
+  .text-gold-gradient {
+    background: linear-gradient(
+      135deg,
+      hsl(43, 74%, 60%) 0%,
+      hsl(38, 80%, 50%) 50%,
+      hsl(43, 74%, 55%) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .glass {
-    backdrop-filter: blur(16px);
-    background: rgba(255, 255, 255, 0.85);
+  /* Gold shimmer effect */
+  .gold-shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(43, 74%, 50%) 0%,
+      hsl(43, 74%, 65%) 50%,
+      hsl(43, 74%, 50%) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
   }
 
-  .dark .glass {
-    background: rgba(0, 0, 0, 0.65);
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
   }
 
-  .glass-card {
-    backdrop-filter: blur(12px);
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+  /* Premium hover effects */
+  .hover-gold {
+    @apply transition-all duration-300;
+  }
+  .hover-gold:hover {
+    box-shadow: 0 0 30px hsla(43, 74%, 55%, 0.3);
   }
 
-  .btn-glow {
-    box-shadow: 0 0 20px rgba(20, 184, 166, 0.4);
+  /* Royal badge styling */
+  .royal-badge {
+    @apply px-4 py-1.5 rounded-full text-sm font-medium;
+    background: linear-gradient(
+      135deg,
+      hsla(43, 74%, 55%, 0.2) 0%,
+      hsla(43, 74%, 55%, 0.1) 100%
+    );
+    border: 1px solid hsla(43, 74%, 55%, 0.4);
+    color: hsl(43, 74%, 60%);
   }
 
-  .btn-glow:hover {
-    box-shadow: 0 0 30px rgba(20, 184, 166, 0.6);
+  /* Feature card with gold accent */
+  .feature-card {
+    @apply p-6 rounded-2xl transition-all duration-300;
+    background: linear-gradient(
+      135deg,
+      hsla(348, 50%, 18%, 0.7) 0%,
+      hsla(348, 55%, 14%, 0.5) 100%
+    );
+    border: 1px solid hsla(43, 74%, 55%, 0.15);
+  }
+  .feature-card:hover {
+    border-color: hsla(43, 74%, 55%, 0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px hsla(348, 60%, 10%, 0.4);
+  }
+
+  /* Stat card styling */
+  .stat-card {
+    @apply text-center p-6 rounded-xl;
+    background: hsla(348, 50%, 20%, 0.5);
+    border: 1px solid hsla(43, 74%, 55%, 0.2);
+  }
+
+  /* Gold icon container */
+  .icon-gold {
+    @apply w-14 h-14 rounded-xl flex items-center justify-center;
+    background: linear-gradient(
+      135deg,
+      hsla(43, 74%, 55%, 0.2) 0%,
+      hsla(43, 74%, 55%, 0.1) 100%
+    );
+    border: 1px solid hsla(43, 74%, 55%, 0.3);
+  }
+
+  /* Premium button styling */
+  .btn-gold {
+    @apply px-8 py-3 rounded-xl font-semibold transition-all duration-300;
+    background: linear-gradient(
+      135deg,
+      hsl(43, 74%, 55%) 0%,
+      hsl(38, 70%, 48%) 100%
+    );
+    color: hsl(348, 65%, 12%);
+    box-shadow: 0 4px 20px hsla(43, 74%, 55%, 0.3);
+  }
+  .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px hsla(43, 74%, 55%, 0.4);
+  }
+
+  .btn-outline-gold {
+    @apply px-8 py-3 rounded-xl font-semibold transition-all duration-300 bg-transparent;
+    border: 2px solid hsla(43, 74%, 55%, 0.5);
+    color: hsl(43, 74%, 60%);
+  }
+  .btn-outline-gold:hover {
+    background: hsla(43, 74%, 55%, 0.1);
+    border-color: hsl(43, 74%, 55%);
   }
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom scrollbar */
+/* Custom scrollbar with maroon theme */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-  border-radius: 4px;
+  background: hsl(348, 50%, 12%);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
+  background: linear-gradient(
+    180deg,
+    hsl(43, 74%, 45%) 0%,
+    hsl(43, 74%, 35%) 100%
+  );
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
+  background: hsl(43, 74%, 55%);
 }
 
-/* Focus visible styles */
+/* Focus ring styling */
 *:focus-visible {
-  outline: 2px solid hsl(var(--ring));
+  outline: 2px solid hsl(43, 74%, 55%);
   outline-offset: 2px;
 }
 
-/* Selection */
+/* Selection styling */
 ::selection {
-  background: hsl(var(--primary) / 0.3);
-  color: hsl(var(--foreground));
+  background: hsla(43, 74%, 55%, 0.3);
+  color: hsl(40, 40%, 95%);
 }
