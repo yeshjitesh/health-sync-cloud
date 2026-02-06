@@ -4,28 +4,26 @@ import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useEffect, useRef, useState } from "react";
 import { Footer } from "@/components/layout/Footer";
-import { Heart, Activity, FileText, Sparkles, Pill, Bot, Users, BarChart3, Shield, Stethoscope, ArrowRight, Star, HeartPulse, Zap, Clock, TrendingUp } from "lucide-react";
+import { Heart, Activity, FileText, Pill, Bot, Users, BarChart3, Shield, Stethoscope, ArrowRight, Star, HeartPulse, Zap, Clock, TrendingUp } from "lucide-react";
+
 const features = [{
   icon: Bot,
   title: "DVDS Bot",
-  description: "Get instant answers to your health questions with our AI-powered assistant",
-  color: "from-primary to-purple-500"
+  description: "Get instant answers to your health questions with our AI-powered assistant"
 }, {
   icon: Stethoscope,
   title: "Disease Predictor",
-  description: "Assess your risk for diabetes, heart disease, kidney and liver conditions",
-  color: "from-accent to-orange-500"
+  description: "Assess your risk for diabetes, heart disease, kidney and liver conditions"
 }, {
   icon: FileText,
   title: "Health Records",
-  description: "Track vital signs, lab results, and health metrics with smart auto-fill",
-  color: "from-green-500 to-emerald-500"
+  description: "Track vital signs, lab results, and health metrics with smart auto-fill"
 }, {
   icon: Pill,
   title: "Medication Tracker",
-  description: "Never miss a dose with real-time medication tracking and reminders",
-  color: "from-blue-500 to-cyan-500"
+  description: "Never miss a dose with real-time medication tracking and reminders"
 }];
+
 const stats = [{
   value: "500+",
   label: "Community Members",
@@ -43,6 +41,7 @@ const stats = [{
   label: "Data Privacy",
   icon: Shield
 }];
+
 const healthFocus = [{
   title: "Diabetes Prevention",
   description: "Early risk assessment and lifestyle recommendations for diabetes prevention in our community.",
@@ -59,6 +58,7 @@ const healthFocus = [{
   icon: "🫘",
   image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=400&h=300&fit=crop"
 }];
+
 const testimonials = [{
   name: "Rajesh Darji",
   location: "Mumbai, India",
@@ -145,23 +145,24 @@ function AnimatedCounter({
     </span>;
 }
 
-// Floating animated particles
+// Floating animated particles with gold theme
 function FloatingParticles() {
   return <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(20)].map((_, i) => <motion.div key={i} className="absolute w-2 h-2 rounded-full bg-primary/20" initial={{
+      {[...Array(15)].map((_, i) => <motion.div key={i} className="absolute w-1 h-1 rounded-full" style={{ background: 'hsl(43, 74%, 55%, 0.3)' }} initial={{
       x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1000),
       y: Math.random() * 600
     }} animate={{
       y: [null, -100, 600],
       x: [null, Math.random() * 100 - 50 + Math.random() * 1000]
     }} transition={{
-      duration: 10 + Math.random() * 10,
+      duration: 12 + Math.random() * 10,
       repeat: Infinity,
       ease: "linear",
       delay: Math.random() * 5
     }} />)}
     </div>;
 }
+
 export default function Landing() {
   const {
     signInWithGoogle,
@@ -178,11 +179,13 @@ export default function Landing() {
   });
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
+  
   useEffect(() => {
     if (isAuthenticated && !loading) {
       navigate("/dashboard");
     }
   }, [isAuthenticated, loading, navigate]);
+  
   const handleSignIn = async () => {
     try {
       await signInWithGoogle();
@@ -190,6 +193,7 @@ export default function Landing() {
       console.error("Error signing in:", error);
     }
   };
+
   return <div className="min-h-screen gradient-hero">
       {/* Hero Section */}
       <motion.div ref={heroRef} style={{
@@ -199,30 +203,23 @@ export default function Landing() {
         {/* Animated Background */}
         <FloatingParticles />
         
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-30">
           <motion.div animate={{
           scale: [1, 1.2, 1],
-          rotate: [0, 90, 0]
-        }} transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear"
-        }} className="absolute top-20 left-10 md:left-20 w-48 md:w-72 h-48 md:h-72 bg-primary rounded-full blur-3xl" />
-          <motion.div animate={{
-          scale: [1.2, 1, 1.2],
-          rotate: [90, 0, 90]
+          rotate: [0, 45, 0]
         }} transition={{
           duration: 25,
           repeat: Infinity,
           ease: "linear"
-        }} className="absolute bottom-20 right-10 md:right-20 w-64 md:w-96 h-64 md:h-96 bg-accent rounded-full blur-3xl" />
+        }} className="absolute top-20 left-10 md:left-20 w-48 md:w-72 h-48 md:h-72 rounded-full blur-3xl" style={{ background: 'hsl(43, 74%, 50%, 0.2)' }} />
           <motion.div animate={{
-          scale: [1, 1.3, 1]
+          scale: [1.2, 1, 1.2],
+          rotate: [45, 0, 45]
         }} transition={{
-          duration: 15,
+          duration: 30,
           repeat: Infinity,
           ease: "linear"
-        }} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500 rounded-full blur-3xl opacity-30" />
+        }} className="absolute bottom-20 right-10 md:right-20 w-64 md:w-96 h-64 md:h-96 rounded-full blur-3xl" style={{ background: 'hsl(348, 50%, 30%, 0.3)' }} />
         </div>
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-12">
@@ -237,16 +234,16 @@ export default function Landing() {
             <div className="flex items-center gap-2.5 md:gap-3">
               <motion.div whileHover={{
               scale: 1.05
-            }} className="w-10 h-10 md:w-12 md:h-12 rounded-xl overflow-hidden shadow-lg ring-2 ring-primary/20">
+            }} className="w-10 h-10 md:w-12 md:h-12 rounded-xl overflow-hidden shadow-lg" style={{ boxShadow: '0 4px 20px hsla(43, 74%, 55%, 0.3)' }}>
                 <img alt="DVDS-Health" className="w-full h-full object-cover" src={LOGO_URL} />
               </motion.div>
-              <span className="text-lg md:text-2xl font-bold text-white tracking-tight">DVDS-Health</span>
+              <span className="text-lg md:text-2xl font-bold text-gold-gradient tracking-tight">DVDS-Health</span>
             </div>
             <nav className="hidden md:flex items-center gap-6 mr-4">
-              <Link to="/about" className="text-white/70 hover:text-white transition-colors text-sm font-medium">About</Link>
-              <Link to="/contact" className="text-white/70 hover:text-white transition-colors text-sm font-medium">Contact</Link>
+              <Link to="/about" className="text-cream-200 hover:text-gold-400 transition-colors text-sm font-medium">About</Link>
+              <Link to="/contact" className="text-cream-200 hover:text-gold-400 transition-colors text-sm font-medium">Contact</Link>
             </nav>
-            <Button onClick={handleSignIn} size="sm" className="gradient-primary border-0 text-white hover:opacity-90 text-sm md:text-base px-4 md:px-6 shadow-lg btn-glow font-medium">
+            <Button onClick={handleSignIn} size="sm" className="btn-gold text-sm md:text-base px-4 md:px-6">
               <ArrowRight className="w-4 h-4 mr-1.5" />
               Get Started
             </Button>
@@ -268,23 +265,16 @@ export default function Landing() {
             scale: 1
           }} transition={{
             delay: 0.1
-          }} className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-6">
-              <Users className="w-4 h-4 text-primary" />
-              <span className="text-white/80 text-sm">For the Diu Vanja Darji Samaj Community</span>
+          }} className="royal-badge inline-flex items-center gap-2 mb-6">
+              <Users className="w-4 h-4" />
+              <span className="text-sm">For the Diu Vanza Darji Samaj Community</span>
             </motion.div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-cream-100 mb-4 md:mb-6 leading-tight">
               Your AI-Powered
               <br />
-              <motion.span className="text-gradient inline-block" animate={{
-              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
-            }} transition={{
-              duration: 5,
-              repeat: Infinity
-            }}>
-                Health Companion
-              </motion.span>
+              <span className="text-gold-gradient">Health Companion</span>
             </h1>
-            <p className="text-base md:text-lg text-white/70 max-w-2xl mx-auto mb-8 md:mb-10 px-4 leading-relaxed">
+            <p className="text-base md:text-lg text-cream-300 max-w-2xl mx-auto mb-8 md:mb-10 px-4 leading-relaxed">
               Manage your health with intelligent disease prediction, symptom
               analysis, and comprehensive medical record tracking — designed with our community's wellness in mind.
             </p>
@@ -294,7 +284,7 @@ export default function Landing() {
             }} whileTap={{
               scale: 0.98
             }}>
-                <Button onClick={handleSignIn} size="lg" className="gradient-accent border-0 text-white hover:opacity-90 text-base md:text-lg px-6 md:px-8 py-5 md:py-6 shadow-xl shadow-accent/30 w-full sm:w-auto font-semibold btn-glow">
+                <Button onClick={handleSignIn} size="lg" className="btn-gold text-base md:text-lg px-6 md:px-8 py-5 md:py-6 w-full sm:w-auto font-semibold">
                   Get Started Free
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
@@ -305,7 +295,7 @@ export default function Landing() {
               }} whileTap={{
                 scale: 0.98
               }}>
-                  <Button variant="outline" size="lg" className="border-2 border-white/30 bg-white/10 text-white hover:bg-white/20 hover:border-white/50 text-base md:text-lg px-6 md:px-8 py-5 md:py-6 w-full backdrop-blur-sm font-medium">
+                  <Button variant="outline" size="lg" className="btn-outline-gold text-base md:text-lg px-6 md:px-8 py-5 md:py-6 w-full">
                     Learn More
                   </Button>
                 </motion.div>
@@ -322,7 +312,7 @@ export default function Landing() {
             duration: 4,
             repeat: Infinity
           }}>
-              <HeartPulse className="w-12 h-12 text-primary/40" />
+              <HeartPulse className="w-12 h-12 text-gold-400/40" />
             </motion.div>
           </div>
           <div className="hidden lg:block absolute top-1/2 right-8">
@@ -333,7 +323,7 @@ export default function Landing() {
             duration: 5,
             repeat: Infinity
           }}>
-              <Activity className="w-10 h-10 text-accent/40" />
+              <Activity className="w-10 h-10 text-gold-500/40" />
             </motion.div>
           </div>
 
@@ -360,12 +350,12 @@ export default function Landing() {
             }} whileHover={{
               scale: 1.03,
               y: -3
-            }} className="text-center p-4 md:p-6 rounded-2xl glass-card hover:bg-white/10 transition-all cursor-default">
-                  <Icon className="w-6 h-6 md:w-8 md:h-8 text-primary mx-auto mb-2.5" />
-                  <p className="text-2xl md:text-3xl font-bold text-white mb-1">
+            }} className="stat-card cursor-default">
+                  <Icon className="w-6 h-6 md:w-8 md:h-8 text-gold-400 mx-auto mb-2.5" />
+                  <p className="text-2xl md:text-3xl font-bold text-cream-100 mb-1">
                     <AnimatedCounter target={stat.value} />
                   </p>
-                  <p className="text-xs md:text-sm text-white/60 font-medium">{stat.label}</p>
+                  <p className="text-xs md:text-sm text-cream-400 font-medium">{stat.label}</p>
                 </motion.div>;
           })}
           </motion.div>
@@ -380,7 +370,7 @@ export default function Landing() {
         }} transition={{
           delay: 0.5
         }} className="mb-16">
-            <h2 className="text-2xl md:text-3xl font-bold text-white text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-cream-100 text-center mb-8">
               Everything You Need for Better Health
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
@@ -397,18 +387,18 @@ export default function Landing() {
               }} whileHover={{
                 y: -10,
                 scale: 1.02
-              }} className="p-5 md:p-6 rounded-xl md:rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/15 hover:border-white/20 transition-all duration-300 group cursor-pointer">
+              }} className="feature-card group cursor-pointer">
                     <motion.div whileHover={{
                   rotate: [0, -10, 10, 0]
                 }} transition={{
                   duration: 0.5
-                }} className={`w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4 shadow-lg`}>
-                      <Icon className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                }} className="icon-gold mb-4">
+                      <Icon className="w-6 h-6 md:w-7 md:h-7 text-gold-400" />
                     </motion.div>
-                    <h3 className="text-base md:text-lg font-semibold text-white mb-2">
+                    <h3 className="text-base md:text-lg font-semibold text-cream-100 mb-2">
                       {feature.title}
                     </h3>
-                    <p className="text-white/60 text-sm">
+                    <p className="text-cream-400 text-sm">
                       {feature.description}
                     </p>
                   </motion.div>;
@@ -419,7 +409,7 @@ export default function Landing() {
       </motion.div>
 
       {/* Why Choose Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-b from-transparent to-black/10">
+      <section className="py-16 md:py-20 gradient-maroon">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div initial={{
           opacity: 0,
@@ -430,10 +420,10 @@ export default function Landing() {
         }} viewport={{
           once: true
         }} className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-cream-100 mb-4">
               Why Choose DVDS-Health?
             </h2>
-            <p className="text-white/60 max-w-2xl mx-auto">
+            <p className="text-cream-400 max-w-2xl mx-auto">
               Built specifically for our community with features that matter most.
             </p>
           </motion.div>
@@ -463,17 +453,19 @@ export default function Landing() {
             delay: index * 0.1
           }} whileHover={{
             y: -5
-          }} className="p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 text-center">
-                <item.icon className="w-10 h-10 text-primary mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
-                <p className="text-white/60 text-sm">{item.desc}</p>
+          }} className="feature-card text-center">
+                <div className="icon-gold mx-auto mb-4">
+                  <item.icon className="w-8 h-8 text-gold-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-cream-100 mb-2">{item.title}</h3>
+                <p className="text-cream-400 text-sm">{item.desc}</p>
               </motion.div>)}
           </div>
         </div>
       </section>
 
       {/* Community Health Focus Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-b from-black/10 to-black/20">
+      <section className="py-16 md:py-20 gradient-hero">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div initial={{
           opacity: 0,
@@ -484,11 +476,11 @@ export default function Landing() {
         }} viewport={{
           once: true
         }} className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-cream-100 mb-4">
               Focused on Community Health Priorities
             </h2>
-            <p className="text-white/60 max-w-2xl mx-auto">
-              We address the health concerns most relevant to the Diu Vanja Darji Samaj community with culturally-aware AI guidance.
+            <p className="text-cream-400 max-w-2xl mx-auto">
+              We address the health concerns most relevant to the Diu Vanza Darji Samaj community with culturally-aware AI guidance.
             </p>
           </motion.div>
 
@@ -505,7 +497,7 @@ export default function Landing() {
             delay: index * 0.1
           }} whileHover={{
             y: -5
-          }} className="rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 overflow-hidden group">
+          }} className="rounded-2xl glass-card-maroon overflow-hidden group">
                 <div className="h-40 overflow-hidden">
                   <motion.img src={item.image} alt={item.title} className="w-full h-full object-cover" whileHover={{
                 scale: 1.1
@@ -515,8 +507,8 @@ export default function Landing() {
                 </div>
                 <div className="p-6 text-center">
                   <span className="text-3xl mb-3 block">{item.icon}</span>
-                  <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
-                  <p className="text-white/60 text-sm">{item.description}</p>
+                  <h3 className="text-xl font-semibold text-cream-100 mb-2">{item.title}</h3>
+                  <p className="text-cream-400 text-sm">{item.description}</p>
                 </div>
               </motion.div>)}
           </div>
@@ -524,7 +516,7 @@ export default function Landing() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 md:py-20">
+      <section className="py-16 md:py-20 gradient-maroon">
         <div className="max-w-6xl mx-auto px-4">
           <motion.div initial={{
           opacity: 0,
@@ -535,10 +527,10 @@ export default function Landing() {
         }} viewport={{
           once: true
         }} className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-cream-100 mb-4">
               Trusted by Our Community
             </h2>
-            <p className="text-white/60">
+            <p className="text-cream-400">
               See what community members are saying about DVDS-Health
             </p>
           </motion.div>
@@ -556,18 +548,18 @@ export default function Landing() {
             delay: index * 0.1
           }} whileHover={{
             y: -5
-          }} className="p-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10">
+          }} className="feature-card">
                 <div className="flex items-center gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
+                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-gold-400 text-gold-400" />)}
                 </div>
-                <p className="text-white/80 mb-4 text-sm leading-relaxed">"{testimonial.quote}"</p>
+                <p className="text-cream-200 mb-4 text-sm leading-relaxed">"{testimonial.quote}"</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-white font-semibold text-sm">
+                  <div className="w-10 h-10 rounded-full gradient-gold flex items-center justify-center text-maroon-900 font-semibold text-sm">
                     {testimonial.avatar}
                   </div>
                   <div>
-                    <p className="text-white font-medium text-sm">{testimonial.name}</p>
-                    <p className="text-white/50 text-xs">{testimonial.location}</p>
+                    <p className="text-cream-100 font-medium text-sm">{testimonial.name}</p>
+                    <p className="text-cream-500 text-xs">{testimonial.location}</p>
                   </div>
                 </div>
               </motion.div>)}
@@ -576,7 +568,7 @@ export default function Landing() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-20">
+      <section className="py-16 md:py-20 gradient-hero">
         <div className="max-w-4xl mx-auto px-4">
           <motion.div initial={{
           opacity: 0,
@@ -586,7 +578,7 @@ export default function Landing() {
           scale: 1
         }} viewport={{
           once: true
-        }} className="p-8 md:p-12 rounded-3xl gradient-primary text-center relative overflow-hidden">
+        }} className="p-8 md:p-12 rounded-3xl gradient-gold text-center relative overflow-hidden">
             {/* Decorative elements */}
             <div className="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
             <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-3xl" />
@@ -597,13 +589,13 @@ export default function Landing() {
             }} transition={{
               duration: 2,
               repeat: Infinity
-            }} className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-white/20 flex items-center justify-center">
-                <Heart className="w-8 h-8 text-white" />
+            }} className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-maroon-800/30 flex items-center justify-center">
+                <Heart className="w-8 h-8 text-maroon-900" />
               </motion.div>
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-maroon-900 mb-4">
                 Start Your Health Journey Today
               </h2>
-              <p className="text-white/80 mb-8 max-w-xl mx-auto">
+              <p className="text-maroon-800 mb-8 max-w-xl mx-auto">
                 Join hundreds of community members already using DVDS-Health to take control of their wellness.
               </p>
               <motion.div whileHover={{
@@ -611,7 +603,7 @@ export default function Landing() {
             }} whileTap={{
               scale: 0.98
             }}>
-                <Button onClick={handleSignIn} size="lg" className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6 shadow-xl">
+                <Button onClick={handleSignIn} size="lg" className="bg-maroon-800 text-cream-100 hover:bg-maroon-900 text-lg px-8 py-6 shadow-xl">
                   Get Started Free
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
