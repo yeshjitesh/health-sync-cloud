@@ -1,118 +1,126 @@
-import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Footer } from "@/components/layout/Footer";
 import { PublicHeader } from "@/components/layout/PublicHeader";
-import { Shield, Lock, Eye, Database, UserCheck } from "lucide-react";
-import { useAuthContext } from "@/contexts/AuthContext";
+import { Footer } from "@/components/layout/Footer";
+import { Shield, Lock, Eye, Database, UserCheck, FileText } from "lucide-react";
 
 export default function Privacy() {
-  const { signInWithGoogle } = useAuthContext();
+  const sections = [
+    {
+      icon: Database,
+      title: "Information We Collect",
+      content: `We collect information you provide directly to us, such as when you create an account, 
+      use our health tracking features, or contact us for support. This may include:
+      • Account information (email, name, profile details)
+      • Health data you choose to log (vital signs, medications, health records)
+      • Location data (only with your explicit consent)
+      • Usage data and analytics to improve our services`
+    },
+    {
+      icon: Lock,
+      title: "How We Protect Your Data",
+      content: `Your health data is encrypted both in transit and at rest using industry-standard 
+      encryption protocols. We implement:
+      • AES-256 encryption for stored data
+      • TLS 1.3 for data in transit
+      • Regular security audits and penetration testing
+      • Strict access controls and authentication`
+    },
+    {
+      icon: Eye,
+      title: "How We Use Your Information",
+      content: `We use your information to:
+      • Provide and improve our health tracking services
+      • Generate personalized health insights using AI
+      • Send medication reminders and health notifications
+      • Comply with legal obligations
+      We never sell your personal health data to third parties.`
+    },
+    {
+      icon: UserCheck,
+      title: "Your Rights and Choices",
+      content: `You have the right to:
+      • Access, update, or delete your personal data
+      • Export your health records at any time
+      • Opt out of non-essential communications
+      • Revoke location permissions
+      • Request a copy of all data we hold about you`
+    },
+    {
+      icon: Shield,
+      title: "Data Retention",
+      content: `We retain your health data for as long as your account is active or as needed to 
+      provide services. You can request deletion of your data at any time through your 
+      account settings or by contacting us.`
+    },
+    {
+      icon: FileText,
+      title: "Updates to This Policy",
+      content: `We may update this privacy policy from time to time. We will notify you of any 
+      significant changes by email or through the app. Your continued use of DVDS-Health 
+      after such modifications constitutes your acceptance of the updated policy.`
+    }
+  ];
 
   return (
-    <div className="min-h-screen gradient-hero">
-      <PublicHeader showSignIn onSignIn={signInWithGoogle} />
-
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 md:py-14">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-10 text-center"
-        >
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl gradient-primary mb-5 shadow-lg">
-            <Shield className="w-8 h-8 text-white" />
+    <div className="min-h-screen gradient-hero flex flex-col">
+      <PublicHeader />
+      
+      <main className="flex-1 py-12 md:py-16">
+        <div className="max-w-4xl mx-auto px-4">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="icon-gold w-16 h-16 mx-auto mb-6">
+              <Shield className="w-8 h-8 text-gold-400" />
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold text-cream-100 mb-4">
+              Privacy Policy
+            </h1>
+            <p className="text-cream-400 max-w-2xl mx-auto">
+              Your privacy and the security of your health data are our top priorities. 
+              This policy explains how we collect, use, and protect your information.
+            </p>
+            <p className="text-cream-500 text-sm mt-4">
+              Last updated: February 2025
+            </p>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">Privacy Policy</h1>
-          <p className="text-white/60 text-sm">Last updated: February 1, 2026</p>
-        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="space-y-5"
-        >
-          <Card className="glass-card text-white">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2.5 text-lg">
-                <Lock className="w-5 h-5 text-primary" />
-                Information We Collect
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-white/80 text-sm leading-relaxed">
-              <p>We collect the following types of information:</p>
-              <ul className="list-disc list-inside space-y-2 ml-2">
-                <li><strong className="text-white">Account Information:</strong> Email address and authentication details via Google Sign-In</li>
-                <li><strong className="text-white">Profile Data:</strong> Name, date of birth, gender, height, weight, blood type, and emergency contact</li>
-                <li><strong className="text-white">Health Records:</strong> Vital signs, lab results, and health metrics you choose to track</li>
-                <li><strong className="text-white">Medication Data:</strong> Medications, dosages, and schedules you enter</li>
-                <li><strong className="text-white">Location Data:</strong> Only with your explicit consent, for region-specific health guidance</li>
-                <li><strong className="text-white">Chat History:</strong> Conversations with DVDS Bot for continuity of care discussions</li>
-              </ul>
-            </CardContent>
-          </Card>
+          {/* Content */}
+          <div className="space-y-6">
+            {sections.map((section, index) => {
+              const Icon = section.icon;
+              return (
+                <div key={index} className="feature-card">
+                  <div className="flex items-start gap-4">
+                    <div className="icon-gold shrink-0">
+                      <Icon className="w-5 h-5 text-gold-400" />
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-semibold text-cream-100 mb-3">
+                        {section.title}
+                      </h2>
+                      <p className="text-cream-400 text-sm whitespace-pre-line leading-relaxed">
+                        {section.content}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
-          <Card className="glass-card text-white">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2.5 text-lg">
-                <Database className="w-5 h-5 text-primary" />
-                How We Use Your Data
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-white/80 text-sm leading-relaxed">
-              <ul className="list-disc list-inside space-y-2 ml-2">
-                <li>Provide personalized health tracking and insights</li>
-                <li>Power AI-driven disease risk assessments</li>
-                <li>Deliver region-specific health recommendations</li>
-                <li>Send medication reminders and health notifications</li>
-                <li>Improve our AI health assistant's responses</li>
-              </ul>
-              <div className="mt-4 p-4 rounded-lg bg-primary/10 border border-primary/20">
-                <p className="text-primary font-medium">
-                  We never sell your health data. Your information is used solely to provide and improve our services.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-card text-white">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2.5 text-lg">
-                <Eye className="w-5 h-5 text-primary" />
-                Data Security
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-white/80 text-sm leading-relaxed">
-              <ul className="list-disc list-inside space-y-2 ml-2">
-                <li>All data is encrypted in transit and at rest</li>
-                <li>Row-level security ensures only you can access your data</li>
-                <li>We use secure, industry-standard authentication</li>
-                <li>Regular security audits and updates</li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-card text-white">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2.5 text-lg">
-                <UserCheck className="w-5 h-5 text-primary" />
-                Your Rights
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-white/80 text-sm leading-relaxed">
-              <ul className="list-disc list-inside space-y-2 ml-2">
-                <li><strong className="text-white">Access:</strong> Request a copy of your personal data</li>
-                <li><strong className="text-white">Correction:</strong> Update inaccurate information</li>
-                <li><strong className="text-white">Deletion:</strong> Request deletion of your account and data</li>
-                <li><strong className="text-white">Export:</strong> Download your health records</li>
-                <li><strong className="text-white">Withdraw Consent:</strong> Revoke location permissions at any time</li>
-              </ul>
-              <p className="mt-4 text-white/60">
-                To exercise these rights, contact us at <span className="text-primary">privacy@dvds-health.com</span>
-              </p>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
+          {/* Contact */}
+          <div className="mt-12 text-center feature-card">
+            <h3 className="text-lg font-semibold text-cream-100 mb-2">
+              Questions About Privacy?
+            </h3>
+            <p className="text-cream-400 text-sm">
+              Contact us at{" "}
+              <a href="mailto:privacy@dvdshealth.com" className="text-gold-400 hover:text-gold-300 transition-colors">
+                privacy@dvdshealth.com
+              </a>
+            </p>
+          </div>
+        </div>
+      </main>
 
       <Footer />
     </div>

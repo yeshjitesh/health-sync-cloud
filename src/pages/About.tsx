@@ -1,121 +1,149 @@
-import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Footer } from "@/components/layout/Footer";
 import { PublicHeader } from "@/components/layout/PublicHeader";
-import { Users, Target, Lightbulb, Globe, Sparkles, Heart } from "lucide-react";
-import { useAuthContext } from "@/contexts/AuthContext";
+import { Footer } from "@/components/layout/Footer";
+import { Heart, Users, Globe, Shield, Target, Sparkles } from "lucide-react";
 
 export default function About() {
-  const { signInWithGoogle } = useAuthContext();
+  const values = [
+    {
+      icon: Heart,
+      title: "Community First",
+      description: "Built by and for the Diu Vanza Darji Samaj community, with deep understanding of our cultural values and health needs."
+    },
+    {
+      icon: Shield,
+      title: "Privacy & Trust",
+      description: "Your health data is sacred. We employ bank-level encryption and never sell your personal information."
+    },
+    {
+      icon: Globe,
+      title: "Global Reach",
+      description: "Whether you're in India, UK, USA, or anywhere else, get health guidance aligned with your local healthcare system."
+    },
+    {
+      icon: Target,
+      title: "Preventive Focus",
+      description: "Early detection and prevention are key. Our AI helps identify health risks before they become serious."
+    }
+  ];
+
+  const team = [
+    { name: "DVDS Community", role: "Founders", emoji: "👥" },
+    { name: "Health Professionals", role: "Medical Advisors", emoji: "👨‍⚕️" },
+    { name: "Tech Team", role: "Development", emoji: "💻" },
+    { name: "Community Elders", role: "Guidance", emoji: "🙏" }
+  ];
 
   return (
-    <div className="min-h-screen gradient-hero">
-      <PublicHeader showSignIn onSignIn={signInWithGoogle} />
-
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 md:py-14">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-10 text-center"
-        >
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl gradient-primary mb-5 shadow-lg">
-            <Heart className="w-8 h-8 text-white" />
+    <div className="min-h-screen gradient-hero flex flex-col">
+      <PublicHeader />
+      
+      <main className="flex-1 py-12 md:py-16">
+        <div className="max-w-4xl mx-auto px-4">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="icon-gold w-16 h-16 mx-auto mb-6">
+              <Users className="w-8 h-8 text-gold-400" />
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold text-cream-100 mb-4">
+              About DVDS-Health
+            </h1>
+            <p className="text-cream-400 max-w-2xl mx-auto text-lg">
+              Empowering the Diu Vanza Darji Samaj community with AI-powered health management tools.
+            </p>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">About DVDS-Health</h1>
-          <p className="text-white/70 text-base md:text-lg max-w-2xl mx-auto">
-            Empowering the Diu Vanja Darji Samaj community with AI-powered health management
-          </p>
-        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="space-y-5"
-        >
-          <Card className="glass-card text-white">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2.5 text-lg">
-                <Target className="w-5 h-5 text-primary" />
-                Our Mission
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-white/80 text-sm leading-relaxed">
+          {/* Mission */}
+          <div className="feature-card mb-8">
+            <div className="text-center">
+              <Sparkles className="w-10 h-10 text-gold-400 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-cream-100 mb-4">Our Mission</h2>
+              <p className="text-cream-400 leading-relaxed max-w-2xl mx-auto">
+                DVDS-Health was created to bridge the gap between traditional community values and 
+                modern healthcare technology. We believe that every member of our community deserves 
+                access to intelligent health tools that understand their unique cultural context, 
+                dietary habits, and health priorities.
+              </p>
+            </div>
+          </div>
+
+          {/* Story */}
+          <div className="feature-card mb-8">
+            <h2 className="text-xl font-bold text-cream-100 mb-4">Our Story</h2>
+            <div className="space-y-4 text-cream-400 text-sm leading-relaxed">
               <p>
-                DVDS-Health is dedicated to providing accessible, intelligent health management tools
-                specifically designed for the Diu Vanja Darji Samaj community. We believe that everyone
-                deserves access to modern health tracking and AI-powered wellness insights.
+                The Diu Vanza Darji Samaj community spans across continents—from our ancestral 
+                roots in Diu, India, to thriving communities in the UK, USA, and beyond. Despite 
+                geographical distances, we share common health concerns: diabetes, heart disease, 
+                and lifestyle-related conditions that disproportionately affect our community.
               </p>
               <p>
-                Our platform bridges the gap between traditional health awareness and cutting-edge
-                technology, making preventive healthcare accessible to all community members, regardless
-                of their technical expertise.
+                DVDS-Health was born from a simple observation: while healthcare apps abound, 
+                none truly understood our community's needs. Our traditional foods, family 
+                structures, and cultural practices all influence our health in unique ways.
               </p>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-card text-white">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2.5 text-lg">
-                <Globe className="w-5 h-5 text-primary" />
-                Serving Our Community
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-white/80 text-sm leading-relaxed">
               <p>
-                The Diu Vanja Darji Samaj community spans across India, the UK, the US, and beyond.
-                DVDS-Health recognizes this global presence and provides:
+                Today, we're proud to offer an AI-powered platform that provides region-specific 
+                health guidance (NHS for UK, CDC for USA, ICMR for India), supports multiple 
+                languages including Gujarati, and helps our community take proactive control 
+                of their health journey.
               </p>
-              <ul className="list-disc list-inside space-y-2 ml-2">
-                <li><strong className="text-white">Region-specific guidance:</strong> Health recommendations aligned with local healthcare systems (NHS, CDC, ICMR)</li>
-                <li><strong className="text-white">Cultural sensitivity:</strong> Understanding of community health priorities and concerns</li>
-                <li><strong className="text-white">Accessibility:</strong> Simple, intuitive design for users of all ages</li>
-                <li><strong className="text-white">Privacy-first:</strong> Your health data belongs to you and you alone</li>
-              </ul>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          <Card className="glass-card text-white">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2.5 text-lg">
-                <Lightbulb className="w-5 h-5 text-primary" />
-                What We Offer
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-white/80 text-sm leading-relaxed">
-              <ul className="list-disc list-inside space-y-2 ml-2">
-                <li><strong className="text-white">DVDS Bot:</strong> AI health assistant for instant health guidance</li>
-                <li><strong className="text-white">Disease Predictor:</strong> Risk assessments for diabetes, heart disease, kidney, and liver conditions</li>
-                <li><strong className="text-white">Health Records:</strong> Comprehensive tracking of vitals, lab results, and health metrics</li>
-                <li><strong className="text-white">Medication Manager:</strong> Never miss a dose with smart reminders</li>
-                <li><strong className="text-white">Secure Documents:</strong> Store and organize medical documents safely</li>
-              </ul>
-            </CardContent>
-          </Card>
+          {/* Values */}
+          <div className="mb-8">
+            <h2 className="text-xl font-bold text-cream-100 mb-6 text-center">Our Values</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {values.map((value, index) => {
+                const Icon = value.icon;
+                return (
+                  <div key={index} className="feature-card">
+                    <div className="flex items-start gap-4">
+                      <div className="icon-gold shrink-0">
+                        <Icon className="w-5 h-5 text-gold-400" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-cream-100 mb-1">{value.title}</h3>
+                        <p className="text-cream-400 text-sm">{value.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
 
-          <Card className="glass-card text-white">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2.5 text-lg">
-                <Sparkles className="w-5 h-5 text-primary" />
-                Our Commitment
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-white/80 text-sm leading-relaxed">
-              <p>
-                We are committed to continuously improving DVDS-Health based on community feedback.
-                Our roadmap includes:
-              </p>
-              <ul className="list-disc list-inside space-y-2 ml-2">
-                <li>Multi-language support (Gujarati, English, Portuguese)</li>
-                <li>Family health management features</li>
-                <li>Integration with wearable devices</li>
-                <li>Telemedicine connections with healthcare providers</li>
-                <li>Community health initiatives and awareness programs</li>
-              </ul>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
+          {/* Team */}
+          <div className="feature-card mb-8">
+            <h2 className="text-xl font-bold text-cream-100 mb-6 text-center">Built With Love</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {team.map((member, index) => (
+                <div key={index} className="text-center p-4 rounded-xl" style={{ background: 'hsla(43, 74%, 55%, 0.1)', border: '1px solid hsla(43, 74%, 55%, 0.2)' }}>
+                  <span className="text-3xl mb-2 block">{member.emoji}</span>
+                  <p className="font-medium text-cream-100 text-sm">{member.name}</p>
+                  <p className="text-cream-500 text-xs">{member.role}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="text-center feature-card">
+            <h3 className="text-lg font-semibold text-cream-100 mb-2">
+              Join Our Community
+            </h3>
+            <p className="text-cream-400 text-sm mb-4">
+              Be part of a healthier future for our community.
+            </p>
+            <a 
+              href="/"
+              className="btn-gold inline-flex items-center gap-2"
+            >
+              Get Started <Heart className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </main>
 
       <Footer />
     </div>
